@@ -2,7 +2,7 @@
 
 ## Frontend
 - Angular 20
-- TypeScript 5
+- TypeScript 5.9.3
 - Tailwind 4
 - Ng-zorro
 
