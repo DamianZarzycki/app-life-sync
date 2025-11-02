@@ -1,0 +1,113 @@
+<main class="min-h-screen bg-gray-50">
+    <!-- Error Alert -->
+    @if(error$ | async; as error) { 
+    <section class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 mx-4 mt-4 rounded">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex gap-3 flex-1">
+                <span class="text-2xl flex-shrink-0">⚠️</span>
+                <div class="flex-1">
+                    <h3 class="text-red-800 font-semibold mb-1">{{ error.message }}</h3>
+                    @if (error.details){
+                    <p class="text-red-700 text-sm bg-red-50 p-2 rounded font-mono overflow-x-auto">
+                        {{ error.details | json }}
+                    </p>}
+                </div>
+            </div>
+            <div class="flex gap-2 flex-shrink-0 w-full md:w-auto">
+                <button *ngIf="error.recoverable" (click)="retry()" class="flex-1 md:flex-initial px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition-colors">
+                    Retry
+                </button>
+                <button class="flex-1 md:flex-initial px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-900 rounded font-medium transition-colors" (click)="dismissError()">
+                    Dismiss
+                </button>
+            </div>
+        </div>
+    </section>}
+
+    <!-- Loading Skeleton -->
+    @if(loading$ | async){ 
+    <section class="px-4 md:px-8 py-8">
+        <div class="space-y-8">
+            <!-- Header skeleton -->
+            <div class="h-24 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-lg animate-pulse"></div>
+            
+            <!-- Category grid skeleton -->
+            <div class="space-y-4">
+                <div class="h-8 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="h-48 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-lg animate-pulse"></div>
+                </div>
+            </div>
+            
+            <!-- Reports skeleton -->
+            <div class="space-y-4">
+                <div class="h-8 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+                <div *ngFor="let i of [1, 2, 3, 4, 5]" class="h-20 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-lg animate-pulse"></div>
+            </div>
+        </div>
+    </section>}
+
+    <!-- Dashboard Content -->
+    @if(!(loading$ | async) && (dashboardData$ | async); as data) {
+    <div class="px-4 md:px-8 py-8 max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 pb-8 border-b border-gray-200">
+            <div class="flex-1">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
+                <p class="text-gray-600">Welcome back! Here's your weekly progress.</p>
+            </div>
+            <button (click)="onGenerateReportClick()" class="w-full md:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg">
+                Generate Report
+            </button>
+        </header>
+
+        <!-- Summary Section (Streak + Categories) -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Progress</h2>
+
+            <!-- Streak Display -->
+            <div class="mb-8">
+                <div class="inline-flex items-center gap-6 bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-8 rounded-lg shadow-lg max-w-sm">
+                    <div class="text-5xl">🔥</div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-4xl font-bold">{{ data.summary.streak_days }}</span>
+                        <span class="text-sm opacity-90">Day Streak</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Categories will be rendered here by child component -->
+                <div class="col-span-full p-8 text-center bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-gray-500">
+                    Categories will be displayed here
+                </div>
+            </div>
+        </section>
+
+        <!-- Report History Section -->
+        <section>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Reports</h2>
+            <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                <!-- Report history will be rendered here by child component -->
+                <div class="text-center text-gray-500 py-8">
+                    <p class="mb-2">Report history will be displayed here</p>
+                    <p class="text-sm">{{ data.recent_reports.length }} reports</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if(!(loading$ | async) && !(dashboardData$ | async)) {
+    <section class="flex justify-center items-center min-h-screen px-4">
+        <div class="text-center">
+            <p class="text-lg text-gray-600 mb-6">Unable to load dashboard. Please try again.</p>
+            <button (click)="retry()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg">
+                Retry
+            </button>
+        </div>
+    </section>
+    }
+</main>

@@ -1,0 +1,46 @@
+// Minimal component-specific styles for animations and enhancements
+// All layout and color styles use Tailwind CSS utility classes
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Apply fade-in animation to sections
+section {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+// Smooth transitions for interactive elements
+button {
+  transition: all 0.2s ease-in-out;
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+// Accessibility improvements
+main {
+  focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+  }
+}
