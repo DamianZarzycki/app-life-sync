@@ -60,6 +60,75 @@ import { Enums, Tables, TablesUpdate, TablesInsert } from "./db/database.types";
     user: SignInUserDto;
     session: SignInSessionDto;
   };
+
+  // Registration-specific types
+  export type SignUpFormValue = {
+    email: string;           // User's email address, used for registration
+    password: string;        // User's plaintext password
+    confirmPassword: string; // Confirmation password field (frontend only)
+  };
+
+  export type PasswordStrengthResult = {
+    score: number;                                          // 0-4 strength score
+    level: 'weak' | 'fair' | 'good' | 'strong';            // Strength level
+    feedback: string[];                                      // Array of improvement suggestions
+    criteria: {
+      hasMinLength: boolean;                                // Meets minimum length (6+ chars)
+      hasUppercase: boolean;                                // Contains uppercase letters
+      hasLowercase: boolean;                                // Contains lowercase letters
+      hasNumbers: boolean;                                  // Contains numeric digits
+      hasSpecialChars: boolean;                             // Contains special characters
+    };
+  };
+
+  export type RegistrationViewState = {
+    isLoading: boolean;                                     // True during API call
+    error: LoginError | null;                               // Current error, if any
+    formValue: SignUpFormValue;                             // Current form values
+    isSuccess: boolean;                                     // True after successful registration
+    registeredEmail: string | null;                         // Email used for successful registration
+    user: SignInUserDto | null;                             // Registered user info from API response
+    passwordStrength: PasswordStrengthResult | null;        // Current password strength analysis
+  };
+  
+  // ==================
+  // Login View Models
+  // ==================
+  
+  export type SignInRequest = {
+    email: string;
+    password: string;
+  };
+
+  export type LoginError = {
+    code: 'VALIDATION_ERROR' | 'INVALID_CREDENTIALS' | 'SERVER_ERROR' | 'UNVERIFIED_EMAIL' | 'RATE_LIMITED' | 'NETWORK_ERROR' | 'EMAIL_EXISTS' | 'WEAK_PASSWORD';
+    message: string;
+    details?: {
+      field?: string;
+      reason?: string;
+      retryAfter?: number;
+      action?: string;
+    };
+  };
+
+  export type LoginFormValue = {
+    email: string;
+    password: string;
+  };
+
+  export type LoginViewState = {
+    isLoading: boolean;
+    error: LoginError | null;
+    formValue: LoginFormValue;
+    emailValidated: boolean;
+    lastAttemptTime?: Date;
+  };
+
+  // Request type for sign-up endpoint
+  export type SignUpRequest = {
+    email: string;      // Valid email address, must be unique
+    password: string;   // Non-empty password, min 6 chars (enforced by Supabase)
+  };
   
   // =========
   // Profiles

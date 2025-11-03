@@ -1,0 +1,66 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+
+  .login-content {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+
+    @media (max-width: 640px) {
+      padding: 1.5rem;
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .login-footer {
+    margin-top: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+
+    p {
+      color: #666;
+      font-size: 14px;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    a {
+      color: #1890ff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        text-decoration: underline;
+        color: #0050b3;
+      }
+
+      &:focus {
+        outline: 2px solid #1890ff;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  // Tailwind utility classes
+  .text-primary {
+    color: #1890ff;
+  }
+
+  .font-semibold {
+    font-weight: 600;
+  }
+
+  .hover\:underline:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,33 @@
+<div class="registration-container">
+  <div class="registration-content">
+    @if (!isSuccess()) {
+      <!-- Registration Form (shown initially and on error) -->
+      <app-registration-form
+        [isLoading]="isLoading()"
+        [error]="error()"
+        (onSubmit)="onSubmit($event)"
+        (onErrorDismiss)="onErrorDismiss()"
+        (navigateToLogin)="navigateToLogin()"
+      ></app-registration-form>
+
+      <!-- Sign In Link Footer -->
+      <div class="registration-footer">
+        <p class="text-center mt-4 text-gray-600">
+          Already have an account?
+          <a
+            routerLink="/login"
+            class="text-blue-600 hover:text-blue-700 underline font-semibold">
+            Sign in here
+          </a>
+        </p>
+      </div>
+    } @else {
+      <!-- Success Message (shown after successful registration) -->
+      <app-success-message
+        [email]="registeredEmail() || ''"
+        [user]="user() || undefined"
+        (navigateToDashboard)="navigateToDashboard()"
+      ></app-success-message>
+    }
+  </div>
+</div>
