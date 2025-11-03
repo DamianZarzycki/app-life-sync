@@ -1,0 +1,23 @@
+<div class="login-container">
+  <div class="login-content">
+    <app-login-form
+      [isLoading]="isLoading"
+      [error]="error"
+      (onSubmit)="onSubmit($event)"
+      (onErrorDismiss)="onErrorDismiss()"
+      (onResendVerification)="onResendVerification($event)">
+    </app-login-form>
+
+    <!-- Registration Link -->
+    <div class="login-footer">
+      <p class="text-center mt-4 text-gray-600">
+        Don't have an account?
+        <a
+          routerLink="/register"
+          class="text-blue-600 hover:text-blue-700 underline font-semibold">
+          Sign up here
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
