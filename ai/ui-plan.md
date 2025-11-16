@@ -7,7 +7,6 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
 ## 2. View List
 
 ### a. Login View
-
 - **View Name**: Login
 - **View Path**: `/login`
 - **Main Purpose**: To allow existing users to authenticate and access their accounts.
@@ -19,7 +18,6 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Security**: The form will submit credentials over HTTPS. No sensitive data will be stored in the URL.
 
 ### b. Registration View
-
 - **View Name**: Registration
 - **View Path**: `/register`
 - **Main Purpose**: To allow new users to create an account.
@@ -31,7 +29,6 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Security**: Password strength indicators will be used.
 
 ### c. Email Verification Info View
-
 - **View Name**: Email Verification Info
 - **View Path**: `/verify-email`
 - **Main Purpose**: To inform the user that a verification email has been sent and they need to check their inbox.
@@ -41,7 +38,6 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **UX**: Provides a clear next step for the user after registration, reducing confusion.
 
 ### d. Onboarding Wizard View
-
 - **View Name**: Onboarding Wizard
 - **View Path**: `/onboarding`
 - **Main Purpose**: To guide new users through the initial setup of their profile (timezone) and preferences (focus categories). This is a mandatory step after their first login.
@@ -64,7 +60,6 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Security**: All data is fetched based on the authenticated user's context.
 
 ### f. Preferences View
-
 - **View Name**: Preferences
 - **View Path**: `/preferences`
 - **Main Purpose**: To allow users to manage their application settings.
@@ -75,7 +70,6 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Accessibility**: All form controls will be clearly labeled.
 
 ### g. Report Detail View
-
 - **View Name**: Report Detail
 - **View Path**: `/reports/:id`
 - **Main Purpose**: To display the full content of a single generated report.
