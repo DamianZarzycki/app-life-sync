@@ -1,0 +1,134 @@
+.report-list-container {
+  .loading-state,
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    min-height: 250px;
+
+    p {
+      margin: 0.5rem 0 0 0;
+    }
+  }
+
+  .empty-state {
+    background-color: transparent;
+  }
+
+  .loading-more-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    margin-top: 1rem;
+
+    p {
+      margin: 0.5rem 0 0 0;
+    }
+  }
+
+  .no-more-message {
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+
+    p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Table row styling with alternating rows - matching category card polish
+.table-row {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #3730a3;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.15),
+    rgba(59, 130, 246, 0.05)
+  );
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.2),
+      rgba(59, 130, 246, 0.1)
+    );
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+  }
+
+  // Odd rows (1st, 3rd, 5th, etc.) - Blue gradient variant
+  // &:nth-child(odd) {
+  //   border-color: #e0e7ff;
+  //   background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.03));
+  //   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12);
+
+  //   &:hover {
+  //     background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(59, 130, 246, 0.06));
+  //     box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+  //     transform: translateY(-1px);
+  //   }
+  // }
+
+  // // Even rows (2nd, 4th, 6th, etc.) - Indigo gradient variant
+  // &:nth-child(even) {
+  //   background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(99, 102, 241, 0.02));
+  //   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+  //   background: linear-gradient(
+  //       135deg,
+  //       rgba(59, 130, 246, 0.15),
+  //       rgba(59, 130, 246, 0.05)
+  //     );
+
+  //   &:hover {
+  //     background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05));
+  //     box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+  //     transform: translateY(-1px);
+  //   }
+  // }
+}
+
+// ng-zorro tag customization
+::ng-deep {
+  .report-list-container {
+    nz-tag {
+      .ant-tag {
+        cursor: pointer;
+        margin: 0;
+        font-weight: 500;
+        font-size: 0.8125rem;
+      }
+    }
+
+    nz-spin {
+      .ant-spin {
+        color: #6366f1;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .report-list-container {
+    .loading-state,
+    .empty-state {
+      padding: 2rem 1rem;
+      min-height: 200px;
+    }
+  }
+}
+
+// Responsive scroll sentinel
+.scroll-sentinel {
+  height: 10px;
+  visibility: hidden;
+}

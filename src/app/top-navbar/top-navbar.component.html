@@ -1,0 +1,117 @@
+<nav
+  class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-indigo-600 to-purple-600 shadow-xl">
+  <div class="px-6 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Left Section: App Icon and Logo -->
+      <div class="flex items-center gap-8">
+        <!-- App Icon - Clickable to Dashboard -->
+
+        <button
+          (click)="navigateToDashboard()"
+          class="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200 group"
+          [title]="'Go to Dashboard'">
+          <!-- Icon Container -->
+          <div class="relative">
+            <img
+              src="/public/assets/lify-sync-logo.svg"
+              alt="LifeSync Logo"
+              class="w-10 h-10 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110 object-contain"
+              onerror="this.style.display='none'" />
+            <!-- Tooltip -->
+            <div
+              class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-indigo-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+              Go to Dashboard
+              <div
+                class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-indigo-900"></div>
+            </div>
+          </div>
+
+          <!-- App Name -->
+          <span class="text-xl font-bold text-white hidden sm:inline"
+            >LifeSync</span
+          >
+        </button>
+
+        <!-- Navigation Links -->
+        <div class="hidden md:flex items-center gap-6">
+          <!-- Dashboard Link -->
+          <button
+            (click)="navigateToDashboard()"
+            class="text-white hover:text-indigo-100 font-medium transition-colors duration-200 group relative"
+            [title]="'Go to Dashboard'">
+            <div class="flex items-center gap-2">
+              <i
+                nz-icon
+                nzType="home"
+                nzTheme="outline"
+                class="text-indigo-100 group-hover:text-white transition-colors duration-200 text-lg"></i>
+              <span>Dashboard</span>
+            </div>
+            <!-- Tooltip -->
+            <div
+              class="absolute top-full left-0 mt-2 px-3 py-1 bg-indigo-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+              View your dashboard
+              <div
+                class="absolute bottom-full left-4 border-4 border-transparent border-b-indigo-900"></div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Section: User Icon and Menu -->
+      <div class="relative">
+        <button
+          (click)="toggleUserMenu()"
+          class="flex items-center justify-center group relative"
+          [title]="'User menu'">
+          <!-- User Avatar -->
+          <div
+            class="w-10 h-10 rounded-full border-1 border-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer hover:scale-110">
+            <i
+              nz-icon
+              nzType="user"
+              nzTheme="outline"
+              class="text-white text-lg"></i>
+          </div>
+        </button>
+
+        <!-- User Dropdown Menu -->
+        @if (showUserMenu) {
+          <div
+            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 border border-gray-200 overflow-hidden"
+            appClickOutside
+            (clickOutside)="closeUserMenu()">
+            <!-- Menu Header -->
+            <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+              <p class="text-sm font-semibold text-gray-800">User Menu</p>
+            </div>
+            <!-- Menu Items -->
+            <button
+              (click)="navigateToPreferences()"
+              class="w-full text-left px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors duration-150 flex items-center gap-3 group">
+              <i
+                nz-icon
+                nzType="setting"
+                nzTheme="outline"
+                class="text-gray-400 group-hover:text-blue-600 transition-colors duration-150 text-base group-hover:animate-spin"></i>
+              <span class="group-hover:text-blue-600">Settings</span>
+            </button>
+            <!-- Divider -->
+            <div class="border-t border-gray-200"></div>
+            <!-- Logout Button -->
+            <button
+              (click)="logout()"
+              class="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-150 flex items-center gap-3 group">
+              <i
+                nz-icon
+                nzType="logout"
+                nzTheme="outline"
+                class="text-red-400 group-hover:text-red-700 transition-colors duration-150 text-base"></i>
+              <span class="group-hover:text-red-700">Logout</span>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,45 @@
+<div [ngClass]="getCardClasses()">
+  <!-- Card Header -->
+  <div class="category-card__header">
+    <h3 class="category-card__title">{{ category()?.name }}</h3>
+    @if (isFocusCategory()) {
+      <span class="category-card__icon">⭐</span>
+    }
+  </div>
+
+  <!-- Card Body -->
+  <div class="category-card__body">
+    <!-- Progress Bar Section -->
+    <div class="category-card__progress-section">
+      <nz-progress
+        [nzPercent]="progressPercentage()"
+        [nzStrokeColor]="isFocusCategory() ? focusColor() : '#d9d9d9'"
+        [nzShowInfo]="false">
+      </nz-progress>
+    </div>
+
+    <!-- Note Count Display -->
+    <div class="category-card__note-count">
+      <span class="category-card__current-count">{{ noteCount() }}</span>
+      <span class="category-card__separator"> / </span>
+      <span class="category-card__max-count">{{ maxNotes() }}</span>
+      <span class="category-card__label"> notes</span>
+    </div>
+  </div>
+
+  <!-- Card Footer -->
+  <div class="category-card__footer">
+    <button
+      [disabled]="isLoading()"
+      (click)="onAddNoteClick()"
+      [title]="categoryLabel()"
+      [attr.aria-label]="categoryLabel()"
+      class="category-card__add-note-btn">
+      @if (!isLoading()) {
+        <span>+ Add Note</span>
+      } @else {
+        <nz-spin nzSimple [nzSize]="'small'"></nz-spin>
+      }
+    </button>
+  </div>
+</div>
