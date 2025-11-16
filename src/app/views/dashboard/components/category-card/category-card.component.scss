@@ -1,47 +1,36 @@
 // CategoryCard Component Styles
-// Displays individual category progress with visual distinction for focus categories
+// Displays individual category progress with consistent visual styling
 
-// Base card styling - subtle definition with light border
+// Base card styling - visually distinct with focus appearance
 .category-card {
   border-radius: 8px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid #e0e7ff;
   padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.08),
+    rgba(59, 130, 246, 0.03)
+  );
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   gap: 12px;
 
   // Hover state - slight elevation and lift effect
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
     transform: translateY(-2px);
   }
 
-  // Focus category variant - visually distinct styling
-  &--focus {
-    border: 1px solid #e0e7ff;
-    background: linear-gradient(
-      135deg,
-      rgba(59, 130, 246, 0.08),
-      rgba(59, 130, 246, 0.03)
-    );
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+  .category-card__title {
+    color: black;
+    font-weight: 600;
+  }
 
-    &:hover {
-      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
-    }
-
-    .category-card__title {
-      font-weight: 600;
-      color: black;
-    }
-
-    .category-card__progress-section {
-      ::ng-deep .ant-progress-text {
-        font-weight: 500;
-      }
+  .category-card__progress-section {
+    ::ng-deep .ant-progress-text {
+      font-weight: 500;
     }
   }
 
@@ -70,12 +59,6 @@
     margin: 0;
     flex: 1;
     line-height: 1.4;
-  }
-
-  &__icon {
-    font-size: 18px;
-    line-height: 1;
-    flex-shrink: 0;
   }
 
   // Card body - progress bar and note count
@@ -263,20 +246,20 @@
 // Dark mode support
 @media (prefers-color-scheme: dark) {
   .category-card {
-    background-color: #1f1f1f;
-    border: 1px solid #333333;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.15),
+      rgba(59, 130, 246, 0.05)
+    );
+    border: 1px solid #3730a3;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 
     &:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
     &__title {
       color: #ffffff;
-    }
-
-    &__icon {
-      color: #fadb14;
     }
 
     &__current-count {
@@ -296,24 +279,6 @@
     &__progress-section {
       ::ng-deep .ant-progress-inner {
         background-color: #434343;
-      }
-    }
-
-    &--focus {
-      background: linear-gradient(
-        135deg,
-        rgba(59, 130, 246, 0.15),
-        rgba(59, 130, 246, 0.05)
-      );
-      border: 1px solid #3730a3;
-      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-
-      &:hover {
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-      }
-
-      &__title {
-        color: #ffffff;
       }
     }
   }

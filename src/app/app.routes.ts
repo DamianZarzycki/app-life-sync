@@ -40,6 +40,24 @@ export const routes: Routes = [
     data: { title: 'Preferences - LifeSync' },
   },
   {
+    path: 'notes',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./views/notes-list/notes-list-container.component').then(
+        m => m.NotesListContainerComponent
+      ),
+    data: { title: 'Notes - LifeSync' },
+  },
+  {
+    path: 'notes/:noteId',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./views/note-detail/note-detail-container.component').then(
+        m => m.NoteDetailContainerComponent
+      ),
+    data: { title: 'Note - LifeSync' },
+  },
+  {
     path: '**',
     redirectTo: '/login',
     pathMatch: 'full',

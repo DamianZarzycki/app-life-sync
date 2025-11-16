@@ -1,0 +1,64 @@
+<div class="notes-list-container p-6 lg:p-8 max-w-7xl mx-auto">
+
+  <!-- Error alert -->
+  @if (error()) {
+    <nz-alert
+      [nzType]="'error'"
+      [nzMessage]="error()!.message"
+      nzShowIcon
+      [nzCloseable]="true"
+      class="mb-4"
+    ></nz-alert>
+  }
+
+  <!-- Loading state -->
+  @if (isLoading() && notes().length === 0) {
+    <div class="flex justify-center items-center py-12">
+      <nz-spin nzSimple></nz-spin>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @if (!isLoading() && notes().length === 0 && !error()) {
+    <nz-empty nzNotFoundContent="No notes found"></nz-empty>
+  }
+
+  <!-- Notes list -->
+  @if (notes().length > 0) {
+    <div class="space-y-3">
+      @for (note of notes(); track note.id) {
+        <app-notes-list-item
+          [note]="note"
+          (click)="onNoteClicked(note.id)"
+          class="cursor-pointer"
+        ></app-notes-list-item>
+      }
+    </div>
+
+    <!-- Load more button -->
+    @if (hasMore()) {
+      <div class="mt-8 flex justify-center">
+        <button
+          (click)="onLoadMore()"
+          [disabled]="isLoading()"
+          class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md hover:shadow-lg"
+        >
+          @if (isLoading()) {
+            <span class="flex items-center gap-2">
+              <nz-spin nzSimple></nz-spin>
+              Loading...
+            </span>
+          } @else {
+            Load More
+          }
+        </button>
+      </div>
+    }
+
+    <!-- Total count -->
+    <div class="mt-6 text-center text-sm text-gray-600">
+      Showing {{ notes().length }} of {{ totalCount() }} notes
+    </div>
+  }
+</div>
+

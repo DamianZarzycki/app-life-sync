@@ -80,6 +80,37 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Accessibility**: Ensure the rendered HTML content within the iframe is accessible.
   - **Security**: The report's HTML content will be rendered inside a sandboxed `<iframe>` to prevent XSS vulnerabilities.
 
+### h. Note Detail View
+- **View Name**: Note Detail
+- **View Path**: `/notes/:category/:id`
+- **Main Purpose**: To display the full content of a user-added note and allow the user to edit or delete it.
+- **Key Information to Display**: Note title and content (plain text from textarea), category name, creation date and last modified date, and action buttons (Edit and Delete) in the header/footer area.
+- **Key View Components**:
+  - `NoteDetailContainer` (main view component) - orchestrates data loading and state
+  - `NoteContentDisplay` (sub-component) - renders the note title and content in a clean, readable format
+  - `NoteActions` (sub-component) - contains Edit and Delete action buttons
+  - `EditNoteModal` (sub-component) - modal dialog for editing the note (similar structure to `AddNoteForm`)
+  - `NzPopconfirm` for delete confirmation
+  - Browser back button in the top-navbar or page header
+- **UX, Accessibility, and Security Considerations**:
+  - **UX**: 
+    - Clean, spacious layout with clear typography for readability
+    - Edit button opens a modal with the note pre-filled for editing; closing the modal returns to the Note Detail View (not the dashboard)
+    - Delete button triggers a confirmation dialog to prevent accidental deletion
+    - Show metadata (created date, last modified date) to provide context
+    - Loading skeleton while fetching note data; error message if note not found or fetch fails
+    - Optimistic updates when editing the note
+    - Browser back button for navigation to previous route
+  - **Accessibility**: 
+    - All interactive elements (Edit, Delete buttons) are keyboard accessible and have clear focus states
+    - Semantic HTML with proper heading hierarchy (h1 for note title)
+    - ARIA labels on action buttons for screen readers
+    - Proper focus management when modal opens/closes
+  - **Security**: 
+    - Backend validates that the authenticated user owns the note before allowing view/edit/delete operations
+    - No sensitive user data stored in URL parameters (only note ID)
+    - Sanitize note content on display to prevent XSS if any dynamic content is introduced in future 
+
 ## 3. User Journey Map
 
 1.  **New User Registration**:
@@ -102,7 +133,15 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
     - The user fills in the note content and saves it.
     - The modal closes, and the dashboard UI updates optimistically to show the new note count.
 
-4.  **Generating an On-Demand Report**:
+4.  **Viewing and Editing a Note**:
+    - The user is on the `/dashboard` and clicks on a note within a category card or from a notes list.
+    - They are navigated to the `/notes/:category/:id` page where the full note content is displayed.
+    - The user can click "Edit" to open an edit modal with the note pre-filled.
+    - After editing and saving, the modal closes and the Note Detail View updates with the new content.
+    - The user can click "Delete" to trigger a confirmation dialog. Upon confirmation, the note is deleted and they return to the dashboard.
+    - The user can also click the browser back button to return to their previous route.
+
+5.  **Generating an On-Demand Report**:
     - The user is on the `/dashboard`.
     - They click the "Generate Report" button in the header.
     - A confirmation modal may appear if they have no recent notes.
@@ -125,6 +164,10 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
 
 - **CategoryCard**: A reusable component displayed on the dashboard for each of the six categories. It shows the category name, a progress bar, and an "Add Note" button. It will have a different style if it's a "focus category."
 - **NoteModal**: A modal component (`NzModal`) for creating and editing notes. It contains a form with fields for title and content.
+- **NoteDetailContainer**: The main view component for the Note Detail page. It handles data fetching, state management, and orchestration of sub-components.
+- **NoteContentDisplay**: A sub-component that renders the note title, content, and metadata (creation and modification dates) in a clean, readable format.
+- **NoteActions**: A sub-component containing Edit and Delete action buttons with appropriate styling and ARIA labels.
+- **EditNoteModal**: A modal component for editing existing notes. It pre-fills the form with the current note data and handles update submission.
 - **ReportListItem**: A component used in the report history list on the dashboard. It displays a summary of a report (e.g., date, type) and links to the full `Report Detail` view.
 - **FeedbackModal**: A modal that appears after the user views their first report, allowing them to provide a rating (emojis) and an optional comment.
 - **GlobalErrorDisplay**: A non-view component, likely implemented in the `HttpInterceptor`, that uses `NzNotificationService` to display consistent error and success messages to the user.

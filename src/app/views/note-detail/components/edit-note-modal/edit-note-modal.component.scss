@@ -1,4 +1,4 @@
-// Add Note Modal styling - aligned with theme guidelines
+// Edit Note Modal styling - aligned with add-note-modal theme guidelines
 // Primary: Tailwind CSS utility classes
 // Design system: Indigo/purple primary, gray neutrals, red errors
 // Responsive: Mobile-first with md: and lg: breakpoints
@@ -6,7 +6,7 @@
 
 ::ng-deep {
   // Modal wrapper - ensure centering
-  .add-note-modal-wrapper {
+  .edit-note-modal-wrapper {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -30,7 +30,7 @@
       transition: all 0.2s ease;
     }
 
-    // Modal header - styled with indigo/purple theme
+    // Modal header - styled with indigo/purple theme (matching add-note-modal)
     .ant-modal-header {
       border-bottom: 1px solid #e5e7eb; // gray-200
       background: linear-gradient(to right, #4f46e5, #7c3aed); // indigo-600 to purple-600
@@ -110,7 +110,7 @@
 
   // Mobile responsive - mobile-first approach
   @media (max-width: 640px) {
-    .add-note-modal-wrapper {
+    .edit-note-modal-wrapper {
       .ant-modal {
         width: 90vw !important;
         max-width: 90vw !important;
@@ -152,7 +152,7 @@
 
   // Tablet and desktop - md: breakpoint
   @media (min-width: 768px) {
-    .add-note-modal-wrapper {
+    .edit-note-modal-wrapper {
       .ant-modal {
         border-radius: 0.5rem;
       }

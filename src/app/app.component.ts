@@ -18,7 +18,8 @@ export class AppComponent {
     // Show navbar for protected routes (dashboard, preferences)
     return (
       currentRoute.includes('/dashboard') ||
-      currentRoute.includes('/preferences')
+      currentRoute.includes('/preferences') ||
+      currentRoute.includes('/notes')
     );
   }
 }

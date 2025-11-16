@@ -19,7 +19,7 @@ import { CategoryDto, UUID } from '../../../../../types';
  *
  * Features:
  * - Displays category name, progress bar, and note count
- * - Visual distinction for focus/active categories
+ * - Consistent visual styling with blue accent color
  * - Loading state handling
  * - Keyboard accessible with ARIA labels
  * - OnPush change detection for optimal performance
@@ -51,12 +51,6 @@ export class CategoryCardComponent {
   readonly maxNotes = input(10);
 
   /**
-   * Input: Whether category is in user's active categories
-   * True if category.id is in preferences.active_categories
-   */
-  readonly isFocusCategory = input(false);
-
-  /**
    * Input: Loading state flag
    * True while data is being fetched or updated
    */
@@ -69,17 +63,10 @@ export class CategoryCardComponent {
   readonly addNoteClick = output<UUID>();
 
   /**
-   * Color mapping for focus categories
-   * Maps category slug to Tailwind gradient color class
+   * Output: Event emitted when category card is clicked to view notes
+   * Emits the category UUID
    */
-  private readonly categoryColorMap: Record<string, string> = {
-    family: 'from-red-500 to-red-600',
-    friends: 'from-yellow-500 to-yellow-600',
-    pets: 'from-purple-500 to-purple-600',
-    body: 'from-green-500 to-green-600',
-    mind: 'from-blue-500 to-blue-600',
-    passions: 'from-pink-500 to-pink-600',
-  };
+  readonly viewNotesClick = output<UUID>();
 
   /**
    * Computed: Progress percentage (0-100)
@@ -93,17 +80,6 @@ export class CategoryCardComponent {
     const count = this.noteCount();
     const percentage = (count / max) * 100;
     return Math.min(percentage, 100);
-  });
-
-  /**
-   * Computed: Tailwind color class for focus category styling
-   * Returns color based on category slug, defaults to blue if not found
-   */
-  readonly focusColor = computed(() => {
-    const cat = this.category();
-    return (
-      this.categoryColorMap[cat?.slug ?? ''] || 'from-blue-500 to-blue-600'
-    );
   });
 
   /**
@@ -135,12 +111,27 @@ export class CategoryCardComponent {
   }
 
   /**
+   * Handle category card click to view notes for this category
+   * Validates category ID and emits event to parent
+   */
+  onViewNotesClick(): void {
+    const cat = this.category();
+
+    if (cat?.id) {
+      this.viewNotesClick.emit(cat.id);
+    } else {
+      console.error(
+        'CategoryCard: Cannot emit click - missing or invalid category ID'
+      );
+    }
+  }
+
+  /**
    * Get CSS class object for card container
-   * Applies conditional classes for focus and loading states
+   * Applies conditional classes for loading state
    */
   getCardClasses = computed(() => ({
     'category-card': true,
-    'category-card--focus': this.isFocusCategory(),
     'category-card--loading': this.isLoading(),
   }));
 }

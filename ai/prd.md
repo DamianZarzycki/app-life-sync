@@ -295,6 +295,20 @@ As a user, I want to have access to the list of generated reports.
 - Infinit scroll is implemented (20 reports accessible at the begining)
 - I shuold be able to sort them by date, status or delivery channel
 
+### US-21 - Notes view
+
+**Description:**
+As user, I want to have access to the list of added notes.
+
+**Acceptance Criteria:**
+
+- After clicking on the category card I should be taken to view where I can clearly see the list off added notes
+- I should be able to edit them with the same form that I add them
+- I should have back button that will take me to the dashboard
+- I should have notification when I successfully update the note
+
+---
+
 ## 6. Success Metrics
 
 - ≥90% of users configured their preferences (categories and schedule)

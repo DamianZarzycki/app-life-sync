@@ -10,7 +10,7 @@
         id="title"
         type="text"
         formControlName="title"
-        placeholder="Add a title for your note..."
+        placeholder="Edit the note title..."
         [ngClass]="getTitleInputClasses()" />
       @if (isTitleInvalid()) {
         <p class="text-xs text-red-600 mt-1">
@@ -36,7 +36,7 @@
       <textarea
         id="content"
         formControlName="content"
-        placeholder="Write your note here..."
+        placeholder="Edit your note content here..."
         rows="6"
         [ngClass]="getContentTextareaClasses()"
         (blur)="markContentAsTouched()"></textarea>
@@ -66,8 +66,9 @@
         @if (isSubmitting()) {
           <nz-spin nzSimple [nzSize]="'small'"></nz-spin>
         }
-        {{ isSubmitting() ? 'Saving...' : 'Add Note' }}
+        {{ isSubmitting() ? 'Saving...' : 'Save Changes' }}
       </button>
     </div>
   </form>
 </div>
+
