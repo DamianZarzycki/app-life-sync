@@ -1,0 +1,280 @@
+<main class="min-h-screen bg-gray-50">
+  <!-- Loading State -->
+  @if (isLoadingSignal()) {
+    <div class="loading-container">
+      <nz-spin [nzSimple]="true" [nzSize]="'large'"></nz-spin>
+    </div>
+  }
+
+  <!-- Content (shown when not loading) -->
+  @if (!isLoadingSignal()) {
+    <div class="content-wrapper">
+      <!-- Error Alert -->
+      @if (errorSignal(); as error) {
+        <div class="alert-container">
+          <div class="alert-error">
+            <div class="alert-header">
+              <span class="text-lg">❌</span>
+              <div>
+                <p class="alert-title">{{ error.error.code }}</p>
+                <p class="alert-message">{{ getErrorDescription(error) }}</p>
+              </div>
+            </div>
+            <button
+              class="alert-close"
+              (click)="onErrorDismiss()"
+              type="button"
+              aria-label="Close alert">
+              <span class="text-lg">❌</span>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Form -->
+      <form
+        [formGroup]="preferencesForm"
+        (ngSubmit)="onSave()"
+        class="form-card">
+        <!-- Form Header -->
+        <div class="form-header">
+          <div>
+            <h1 class="form-title">Preferences</h1>
+            <p class="form-subtitle">
+              Manage your LifeSync settings and report preferences
+            </p>
+          </div>
+        </div>
+        <!-- Category Selection Section -->
+        <div class="form-section">
+          <div class="section-header">
+            <div>
+              <label class="form-label">
+                <span class="flex items-center gap-2">
+                  <nz-icon
+                    nzType="folder"
+                    nzTheme="outline"
+                    class="text-indigo-100 group-hover:text-white transition-colors duration-200 text-lg"></nz-icon>
+                  Focus Categories
+                  <span class="required">*</span>
+                </span>
+                <span class="label-hint">(Select up to 3)</span>
+              </label>
+              <p class="section-description">
+                Choose which categories to focus on for your reports
+              </p>
+            </div>
+          </div>
+          <div class="categories-grid">
+            @for (category of categoriesSignal(); track category.id) {
+              <label class="category-card">
+                <input
+                  type="checkbox"
+                  [value]="category.id"
+                  [checked]="
+                    (
+                      preferencesForm.get('active_categories')?.value || []
+                    ).includes(category.id)
+                  "
+                  [disabled]="
+                    !(
+                      preferencesForm.get('active_categories')?.value || []
+                    ).includes(category.id) &&
+                    (preferencesForm.get('active_categories')?.value || [])
+                      .length >= 3
+                  "
+                  (change)="onCategoryToggle($event, category.id)"
+                  class="category-checkbox" />
+                <span class="category-name">{{ category.name }}</span>
+              </label>
+            }
+          </div>
+          @if (getCategoryError(); as error) {
+            <div class="validation-error">
+              <span class="text-lg">❌</span>
+              {{ error }}
+            </div>
+          }
+        </div>
+
+        <!-- Report Day Selection -->
+        <div class="form-section">
+          <div class="section-header">
+            <div>
+              <label class="form-label">
+                <span class="flex items-center gap-2">
+                  <nz-icon
+                    nzType="calendar"
+                    nzTheme="outline"
+                    class="text-indigo-100 group-hover:text-white transition-colors duration-200 text-lg"></nz-icon>
+                  Weekly Report Day
+                  <span class="required">*</span>
+                </span>
+              </label>
+              <p class="section-description">
+                Select which day of the week you'd like to receive reports
+              </p>
+            </div>
+          </div>
+          <select
+            formControlName="report_dow"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+            <option value="" disabled selected>Select day of week</option>
+            @for (day of daysOfWeek(); track day.value) {
+              <option [value]="day.value">{{ day.label }}</option>
+            }
+          </select>
+          @if (getFieldError('report_dow'); as error) {
+            <div class="validation-error">
+              <span class="text-lg">❌</span>
+              {{ error }}
+            </div>
+          }
+        </div>
+
+        <!-- Report Hour Selection -->
+        <div class="form-section">
+          <div class="section-header">
+            <div>
+              <label class="form-label">
+                <span class="flex items-center gap-2">
+                  <nz-icon
+                    nzType="clock-circle"
+                    nzTheme="outline"
+                    class="text-indigo-100 group-hover:text-white transition-colors duration-200 text-lg"></nz-icon>
+                  Report Time (UTC)
+                  <span class="required">*</span>
+                </span>
+              </label>
+              <p class="section-description">
+                Choose what time you'd like to receive your reports
+              </p>
+            </div>
+          </div>
+          <select
+            formControlName="report_hour"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+            <option value="" disabled selected>Select hour</option>
+            @for (hour of hours(); track hour) {
+              <option [value]="hour">{{ formatHour(hour) }}</option>
+            }
+          </select>
+          @if (getFieldError('report_hour'); as error) {
+            <div class="validation-error">
+              <span class="text-lg">❌</span>
+              {{ error }}
+            </div>
+          }
+        </div>
+
+        <!-- Delivery Channels Section -->
+        <div class="form-section">
+          <div class="section-header">
+            <div>
+              <label class="form-label">
+                <span class="flex items-center gap-2">
+                  <nz-icon
+                    nzType="notification"
+                    nzTheme="outline"
+                    class="text-indigo-100 group-hover:text-white transition-colors duration-200 text-lg"></nz-icon>
+                  Delivery Channels
+                  <span class="required">*</span>
+                </span>
+                <span class="label-hint">(Select one or more)</span>
+              </label>
+              <p class="section-description">
+                Choose how you'd like to receive your reports
+              </p>
+            </div>
+          </div>
+          <div class="delivery-channels-grid">
+            @for (channel of deliveryChannels(); track channel.value) {
+              <label class="delivery-channel-card">
+                <input
+                  type="checkbox"
+                  [value]="channel.value"
+                  [checked]="
+                    (
+                      preferencesForm.get('preferred_delivery_channels')
+                        ?.value || []
+                    ).includes(channel.value)
+                  "
+                  (change)="onDeliveryChannelToggle($event, channel.value)"
+                  class="delivery-channel-checkbox" />
+                <div class="channel-content">
+                  <span class="channel-icon">{{ channel.icon }}</span>
+                  <div>
+                    <span class="channel-title">{{ channel.label }}</span>
+                    <span class="channel-description">{{
+                      channel.description
+                    }}</span>
+                  </div>
+                </div>
+              </label>
+            }
+          </div>
+          @if (getDeliveryChannelsError(); as error) {
+            <div class="validation-error">
+              <span class="text-lg">❌</span>
+              {{ error }}
+            </div>
+          }
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button
+            nz-button
+            nzType="primary"
+            nzSize="large"
+            [disabled]="isSavingSignal()"
+            type="submit"
+            class="save-button">
+            <span class="button-content">
+              @if (!isSavingSignal()) {
+                <span class="text-lg">💾</span>
+              }
+              @if (isSavingSignal()) {
+                <nz-spin nzSimple class="button-spinner"></nz-spin>
+              }
+              <span>{{
+                isSavingSignal() ? 'Saving...' : 'Save Preferences'
+              }}</span>
+            </span>
+          </button>
+          @if (isDirtySignal()) {
+            <button
+              nz-button
+              nzSize="large"
+              type="button"
+              (click)="onCancel()"
+              [disabled]="isSavingSignal()"
+              class="cancel-button">
+              <span class="button-content">
+                <span class="text-lg">❌</span>
+                <span>Cancel</span>
+              </span>
+            </button>
+          }
+        </div>
+      </form>
+
+      <!-- Success Message -->
+      @if (isSuccessSignal()) {
+        <div class="alert-container">
+          <div class="alert-success">
+            <div class="alert-header">
+              <span class="text-lg">✅</span>
+              <div>
+                <p class="alert-title">Success</p>
+                <p class="alert-message">
+                  Your preferences have been saved successfully.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</main>

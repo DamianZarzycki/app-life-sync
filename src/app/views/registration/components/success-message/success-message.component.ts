@@ -1,5 +1,10 @@
-import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  input,
+  output,
+} from '@angular/core';
+
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { SignInUserDto } from '../../../../../types';
@@ -17,9 +22,9 @@ import { SignInUserDto } from '../../../../../types';
 @Component({
   selector: 'app-success-message',
   standalone: true,
-  imports: [CommonModule, NzIconModule, NzButtonModule],
+  imports: [NzIconModule, NzButtonModule],
   templateUrl: './success-message.component.html',
-  styleUrl: './success-message.component.scss',
+  //styleUrl: './success-message.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuccessMessageComponent {

@@ -8,10 +8,7 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import {
-  CommonModule,
-  NgClass,
-} from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -24,8 +21,12 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { LoginError, SignUpFormValue, SignUpRequest } from '../../../../../types';
-import { FormErrorAlertComponent } from '../../../../views/login/components/form-error-alert/form-error-alert.component';
+import {
+  LoginError,
+  SignUpFormValue,
+  SignUpRequest,
+} from '../../../../../types';
+import { FormErrorAlertComponent } from '../../../login/components/form-error-alert/form-error-alert.component';
 import { PasswordStrengthIndicatorComponent } from '../password-strength-indicator/password-strength-indicator.component';
 import { PasswordStrengthAnalyzer } from '../../../../utils/password-strength';
 
@@ -92,18 +93,9 @@ export class RegistrationFormComponent implements OnInit {
   private initializeForm(): void {
     this.formGroup = this.fb.group(
       {
-        email: [
-          '',
-          [Validators.required, Validators.email],
-        ],
-        password: [
-          '',
-          [Validators.required, Validators.minLength(1)],
-        ],
-        confirmPassword: [
-          '',
-          [Validators.required],
-        ],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(1)]],
+        confirmPassword: ['', [Validators.required]],
       },
       {
         validators: this.passwordMatchValidator.bind(this),
@@ -116,7 +108,9 @@ export class RegistrationFormComponent implements OnInit {
    * @param group - The form group to validate
    * @returns Validation error or null
    */
-  private passwordMatchValidator(group: AbstractControl): Record<string, boolean> | null {
+  private passwordMatchValidator(
+    group: AbstractControl
+  ): Record<string, boolean> | null {
     const password = group.get('password');
     const confirmPassword = group.get('confirmPassword');
 
@@ -251,8 +245,10 @@ export class RegistrationFormComponent implements OnInit {
   hasConfirmPasswordError(): boolean {
     const control = this.formGroup.get('confirmPassword');
     const passwordMismatch = this.formGroup.hasError('passwordMismatch');
-    return (!!control && control.invalid && this.confirmPasswordTouched()) ||
-           (passwordMismatch && this.confirmPasswordTouched());
+    return (
+      (!!control && control.invalid && this.confirmPasswordTouched()) ||
+      (passwordMismatch && this.confirmPasswordTouched())
+    );
   }
 
   /**
@@ -263,7 +259,10 @@ export class RegistrationFormComponent implements OnInit {
     if (control?.hasError('required')) {
       return 'Confirm password is required';
     }
-    if (this.formGroup.hasError('passwordMismatch') && this.confirmPasswordTouched()) {
+    if (
+      this.formGroup.hasError('passwordMismatch') &&
+      this.confirmPasswordTouched()
+    ) {
       return 'Passwords do not match';
     }
     return '';

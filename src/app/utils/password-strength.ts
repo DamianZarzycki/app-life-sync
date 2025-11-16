@@ -30,7 +30,7 @@ export class PasswordStrengthAnalyzer {
 
     // Calculate score based on criteria met
     let score = 0;
-    Object.values(criteria).forEach((met) => {
+    Object.values(criteria).forEach(met => {
       if (met) score++;
     });
 
@@ -65,7 +65,8 @@ export class PasswordStrengthAnalyzer {
     if (!criteria['hasUppercase']) feedback.push('Include uppercase letter');
     if (!criteria['hasLowercase']) feedback.push('Include lowercase letter');
     if (!criteria['hasNumbers']) feedback.push('Include a number');
-    if (!criteria['hasSpecialChars']) feedback.push('Include special character');
+    if (!criteria['hasSpecialChars'])
+      feedback.push('Include special character');
     return feedback;
   }
 }

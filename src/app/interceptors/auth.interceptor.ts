@@ -41,7 +41,7 @@ export function authInterceptor(
   // Add timeout and error handling
   return next(authReq).pipe(
     timeout(REQUEST_TIMEOUT),
-    tap((event) => {
+    tap(event => {
       // Log responses for debugging
       if (event.type === HttpEventType.Response) {
         console.log(

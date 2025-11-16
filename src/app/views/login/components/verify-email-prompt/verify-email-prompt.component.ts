@@ -5,14 +5,13 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-verify-email-prompt',
   standalone: true,
-  imports: [CommonModule, NzAlertModule, NzButtonModule],
+  imports: [NzAlertModule, NzButtonModule],
   template: `
     <div class="verify-email-prompt">
       <nz-alert
@@ -52,6 +51,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerifyEmailPromptComponent {
-  @Input() email: string = '';
+  @Input() email = '';
   @Output() onResend = new EventEmitter<string>();
 }

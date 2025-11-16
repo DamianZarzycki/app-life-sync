@@ -48,10 +48,11 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Accessibility**: All form controls will be properly labeled.
 
 ### e. Dashboard View
+
 - **View Name**: Dashboard
 - **View Path**: `/dashboard`
 - **Main Purpose**: To serve as the central hub where users can add notes, view their progress, see streaks, and access their reports.
-- **Key Information to Display**: Grid of 6 category cards, note counts per category, streak counter, list of recent reports (with infinite scroll), and a header with the "Generate Report" button.
+- **Key Information to Display**: Grid of 6 category cards, note counts per category, streak counter, list of recent reports (with infinite scroll) as list with number of report (index | status | created_at | channel) , and a header with the "Generate Report" button.
 - **Key View Components**: `CategoryCard` component for each of the 6 categories, `NzProgress` for progress bars, `NzList` for the report history, `NzSkeleton` for loading states.
 - **UX, Accessibility, and Security Considerations**:
   - **UX**: The UI will use optimistic updates for note actions. Skeleton loaders will be shown during initial data load. Focus categories are visually distinct with color.

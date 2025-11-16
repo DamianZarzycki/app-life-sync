@@ -1,2 +1,11 @@
-<router-outlet />
- 
+<div class="flex flex-col min-h-screen bg-gray-50">
+  <!-- Top Navigation Bar - shown only on protected routes -->
+  @if (showNavbar) {
+    <app-top-navbar></app-top-navbar>
+  }
+
+  <!-- Main Content Area (with padding for fixed navbar) -->
+  <div class="flex-1">
+    <router-outlet />
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="add-note-form-container">
+  <form [formGroup]="form" class="add-note-form">
+    <!-- Title Field -->
+    <div class="form-group">
+      <label for="title" class="form-label">
+        Title
+        <span class="text-gray-400">(Optional)</span>
+      </label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="Add a title for your note..."
+        class="form-input"
+        [class.form-input--error]="isTitleInvalid()" />
+      @if (isTitleInvalid()) {
+        <p class="form-error">
+          {{ getTitleErrorMessage() }}
+        </p>
+      }
+    </div>
+
+    <!-- Content Field -->
+    <div class="form-group">
+      <div class="form-label-row">
+        <label for="content" class="form-label">
+          Note Content
+          <span class="text-red-500">*</span>
+        </label>
+        <span
+          class="text-sm font-medium transition-colors"
+          [ngClass]="getCharacterCounterColor()">
+          {{ characterCount() }} / 1000
+        </span>
+      </div>
+
+      <textarea
+        id="content"
+        formControlName="content"
+        placeholder="Write your note here..."
+        rows="6"
+        class="form-textarea"
+        [class.form-input--error]="isContentInvalid()"
+        (blur)="markContentAsTouched()"></textarea>
+
+      @if (isContentInvalid()) {
+        <p class="form-error">
+          {{ getContentErrorMessage() }}
+        </p>
+      }
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-buttons">
+      <button
+        type="button"
+        (click)="onCancel()"
+        [disabled]="isSubmitting()"
+        class="btn btn-secondary">
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        (click)="onSubmit()"
+        [disabled]="form.invalid || isSubmitting()"
+        class="btn btn-primary">
+        @if (isSubmitting()) {
+          <nz-spin nzSimple [nzSize]="'small'"></nz-spin>
+        }
+        {{ isSubmitting() ? 'Saving...' : 'Add Note' }}
+      </button>
+    </div>
+  </form>
+</div>

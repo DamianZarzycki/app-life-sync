@@ -315,7 +315,11 @@ Notes: Authentication uses Supabase JWT (Bearer). Backend validates JWT with Sup
     "streak_days": 5
   },
   "recent_reports": [
-    { "id": "uuid", "generated_by": "scheduled", "created_at": "2025-01-06T02:00:00Z" }
+    {
+      "id": "uuid",
+      "generated_by": "scheduled",
+      "created_at": "2025-01-06T02:00:00Z"
+    }
   ]
 }
 ```

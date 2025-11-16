@@ -4,30 +4,27 @@ import {
   OnDestroy,
   inject,
   ChangeDetectionStrategy,
+  signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {
-  Observable,
-  Subject,
-  combineLatest,
-  of,
-  Subscription,
-} from 'rxjs';
-import { takeUntil, map, switchMap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DashboardService, ErrorState } from '../../services/dashboard.service';
 import {
   DashboardDto,
   DashboardQuery,
   UUID,
+  CategoryDto,
+  NoteDto,
+  ReportDto,
 } from '../../../types';
-import {
-  CategoryCardViewModel,
-  StreakData,
-  getCategoryColorMapping,
-  isValidUUID,
-  DashboardLoadingState,
-} from '../../models/dashboard.models';
+
+import { CategoryCardComponent } from './components/category-card/category-card.component';
+import { ReportListContainerComponent } from './components/report-list-container/report-list-container.component';
+import { AddNoteModalComponent } from './components/add-note-modal/add-note-modal.component';
+import { NotesService } from '../../services/notes.service';
+import { ReportGenerationService } from '../../services/report-generation.service';
 
 /**
  * Main Dashboard Component
@@ -36,7 +33,12 @@ import {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    CategoryCardComponent,
+    ReportListContainerComponent,
+    AddNoteModalComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +46,7 @@ import {
 export class DashboardComponent implements OnInit, OnDestroy {
   private readonly dashboardService = inject(DashboardService);
   private readonly router = inject(Router);
+  private readonly reportGenerationService = inject(ReportGenerationService);
   private readonly destroy$ = new Subject<void>();
 
   // Observable streams from service
@@ -53,12 +56,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   lastRefreshTime$: Observable<Date | null>;
 
   // Combined observables for template
-  loadingState$: Observable<DashboardLoadingState>;
+  loadingState$: Observable<any>;
 
   // Component state
   userTimezone: string = this.getUserTimezone();
   private retryCount = 0;
   private maxRetries = 3;
+
+  // Add Note Modal state
+  isAddNoteModalOpen = signal<boolean>(false);
+  selectedCategory = signal<CategoryDto | null>(null);
 
   constructor() {
     // Initialize observables from service
@@ -69,10 +76,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Create combined loading state
     this.loadingState$ = this.loading$.pipe(
-      map((isLoading) =>
+      map(isLoading =>
         isLoading
-          ? DashboardLoadingState.LOADING
-          : DashboardLoadingState.SUCCESS
+          ? 'loading'
+          : 'success'
       )
     );
   }
@@ -100,7 +107,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
 
     this.dashboardService.fetchDashboard(defaultQuery).subscribe({
-      next: (data) => {
+      next: data => {
         console.log('Dashboard data loaded successfully', data);
         this.retryCount = 0;
       },
@@ -178,13 +185,99 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Get category by ID from dashboard data
+   */
+  getCategoryById(data: DashboardDto, categoryId: UUID): CategoryDto {
+    // Find category from dashboard data or return constructed object
+    const category = data.summary.categories.find(c => c.id === categoryId);
+    if (category) {
+      return category;
+    }
+    // Return a dummy category object if not found
+    return {
+      id: categoryId,
+      slug: categoryId.toLowerCase(),
+      name: this.getCategoryName(categoryId),
+      active: true,
+      created_at: new Date().toISOString(),
+    } as CategoryDto;
+  }
+
+  /**
+   * Get human-readable category name
+   */
+  private getCategoryName(categoryId: UUID): string {
+    const nameMap: Record<string, string> = {
+      family: 'Family',
+      friends: 'Friends',
+      pets: 'Pets',
+      body: 'Body',
+      mind: 'Mind',
+      passions: 'Passions',
+    };
+    return nameMap[categoryId.toLowerCase()] || categoryId;
+  }
+
+  /**
+   * Handle add note click from CategoryCard component
+   */
+  onAddNoteClick(categoryId: UUID): void {
+    this.openAddNoteModal(categoryId);
+  }
+
+  /**
+   * Open add note modal with selected category
+   */
+  private openAddNoteModal(categoryId: UUID): void {
+    // Fetch dashboard data to get the selected category
+    this.dashboardData$
+      .pipe(
+        map(data => {
+          if (data) {
+            const category = data.summary.categories.find(
+              c => c.id === categoryId
+            );
+            if (category) {
+              this.selectedCategory.set(category);
+            }
+          }
+        })
+      )
+      .subscribe();
+
+    this.isAddNoteModalOpen.set(true);
+  }
+
+  /**
+   * Handle add note modal close
+   */
+  onAddNoteModalClose(): void {
+    this.isAddNoteModalOpen.set(false);
+    this.selectedCategory.set(null);
+  }
+
+  /**
+   * Handle successful note creation
+   * Invalidates dashboard cache and reloads data
+   */
+  onNoteCreated(note: NoteDto): void {
+    console.log('Note created:', note);
+    // Invalidate dashboard cache to fetch fresh data
+    this.dashboardService.invalidateCache();
+    // Trigger dashboard reload - calls the existing private loadDashboard method
+    this.retry();
+    // Close modal
+    this.onAddNoteModalClose();
+  }
+
+  /**
    * Navigate to category notes view
    */
   onCategoryClick(categoryId: UUID): void {
-    if (!isValidUUID(categoryId)) {
-      console.error('Invalid category ID:', categoryId);
-      return;
-    }
+    // if (!isValidUUID(categoryId)) {
+    //   console.error('Invalid category ID:', categoryId);
+    //   return;
+    // }
     this.router.navigate(['/categories', categoryId, 'notes']);
   }
 
@@ -192,10 +285,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Navigate to report detail view
    */
   onReportClick(reportId: UUID): void {
-    if (!isValidUUID(reportId)) {
-      console.error('Invalid report ID:', reportId);
-      return;
-    }
+    // if (!isValidUUID(reportId)) {
+    //   console.error('Invalid report ID:', reportId);
+    //   return;
+    // }
     this.router.navigate(['/reports', reportId]);
   }
 
@@ -203,7 +296,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Navigate to report generation
    */
   onGenerateReportClick(): void {
-    this.router.navigate(['/reports', 'generate']);
+    this.reportGenerationService.generateAutoReport().subscribe({
+      next: (report: ReportDto) => {
+        console.log('Report generated:', report);
+      },
+      error: (error: Error) => {
+        console.error('Error generating report:', error);
+      },
+    });
   }
 
   /**

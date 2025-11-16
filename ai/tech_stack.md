@@ -7,12 +7,15 @@
 - Ng-zorro
 
 ## Backend (Supabase jako kompleksowe rozwiązanie backendowe)
+
 - Supabase (baza danych plus autentykacja)
 - Node.js + Express.js
 
 ## AI
+
 - Openrouter.ai
 
 ## CI/CD i Hosting
+
 - GitHub Actions
 - DigitalOcean

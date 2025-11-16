@@ -9,7 +9,6 @@ import {
   input,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -31,15 +30,14 @@ import { LoginError, SignInRequest } from '../../../../../types';
   selector: 'app-login-form',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     NzFormModule,
     NzInputModule,
     NzButtonModule,
     NzSpinModule,
     FormErrorAlertComponent,
-    VerifyEmailPromptComponent,
-  ],
+    VerifyEmailPromptComponent
+],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,13 +46,11 @@ export class LoginFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   isLoading = input.required<boolean>();
-  error = input< LoginError | null >();
+  error = input<LoginError | null>();
 
   onSubmit = output<SignInRequest>();
   onErrorDismiss = output<void>();
   onResendVerification = output<string>();
-
-
 
   loginForm: FormGroup = this.buildForm();
 
@@ -71,14 +67,17 @@ export class LoginFormComponent implements OnInit {
   private buildForm(): FormGroup {
     return this.fb.group({
       email: [
-        '',
+        'dam@mail.com',
         [
           Validators.required,
           Validators.email,
-          this.customEmailValidator(),
+          // this.customEmailValidator(),
         ],
       ],
-      password: ['', [Validators.required, Validators.minLength(1)]],
+      password: [
+        'DenverKrol18$',
+        [Validators.required, Validators.minLength(1)],
+      ],
     });
   }
 
@@ -86,9 +85,7 @@ export class LoginFormComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(control.value)
-        ? null
-        : { invalidEmail: true };
+      return emailRegex.test(control.value) ? null : { invalidEmail: true };
     };
   }
 

@@ -17,10 +17,16 @@ export class AuthService {
   };
 
   // Signal-based state for authentication
-  private readonly accessTokenSignal = signal<string | null>(this.getStoredAccessToken());
-  private readonly refreshTokenSignal = signal<string | null>(this.getStoredRefreshToken());
+  private readonly accessTokenSignal = signal<string | null>(
+    this.getStoredAccessToken()
+  );
+  private readonly refreshTokenSignal = signal<string | null>(
+    this.getStoredRefreshToken()
+  );
   private readonly userIdSignal = signal<string | null>(this.getStoredUserId());
-  private readonly userEmailSignal = signal<string | null>(this.getStoredUserEmail());
+  private readonly userEmailSignal = signal<string | null>(
+    this.getStoredUserEmail()
+  );
 
   // Public signal accessors
   readonly accessToken = this.accessTokenSignal.asReadonly();
@@ -29,10 +35,12 @@ export class AuthService {
   readonly userEmail = this.userEmailSignal.asReadonly();
 
   signIn(request: SignInRequest): Observable<SignInResponseDto> {
-    return this.http.post<SignInResponseDto>(`${this.API_BASE_URL}/sign-in`, request).pipe(
-      tap((response) => this.storeTokens(response)),
-      catchError((error) => throwError(() => error))
-    );
+    return this.http
+      .post<SignInResponseDto>(`${this.API_BASE_URL}/sign-in`, request)
+      .pipe(
+        tap(response => this.storeTokens(response)),
+        catchError(error => throwError(() => error))
+      );
   }
 
   /**
@@ -44,14 +52,16 @@ export class AuthService {
    * @throws HttpErrorResponse for validation errors, duplicate email, weak password, etc.
    */
   signUp(request: SignUpRequest): Observable<SignInResponseDto> {
-    return this.http.post<SignInResponseDto>(`${this.API_BASE_URL}/sign-up`, request).pipe(
-      tap((response) => {
-        console.log('Sign-up successful:', response.user.email);
-        // Store session tokens from successful registration
-        this.storeTokens(response);
-      }),
-      catchError((error) => throwError(() => error))
-    );
+    return this.http
+      .post<SignInResponseDto>(`${this.API_BASE_URL}/sign-up`, request)
+      .pipe(
+        tap(response => {
+          console.log('Sign-up successful:', response.user.email);
+          // Store session tokens from successful registration
+          this.storeTokens(response);
+        }),
+        catchError(error => throwError(() => error))
+      );
   }
 
   private storeTokens(response: SignInResponseDto): void {
@@ -112,7 +122,7 @@ export class AuthService {
   }
 
   logout(): void {
-    Object.values(this.STORAGE_KEYS).forEach((key) => {
+    Object.values(this.STORAGE_KEYS).forEach(key => {
       localStorage.removeItem(key);
     });
 

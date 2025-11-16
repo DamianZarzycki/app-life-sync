@@ -1,18 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError, timer } from 'rxjs';
-import {
-  catchError,
-  tap,
-  timeout,
-  retry,
-  map,
-} from 'rxjs/operators';
-import {
-  DashboardDto,
-  DashboardQuery,
-  UUID,
-} from '../../types';
+import { catchError, tap, timeout, retry, map } from 'rxjs/operators';
+import { DashboardDto, DashboardQuery, UUID } from '../../types';
 
 export interface ErrorState {
   code: string;
@@ -82,7 +72,7 @@ export class DashboardService {
     this.loading$.next(true);
     this.error$.next(null);
 
-    let url = `${this.apiBaseUrl}/dashboard`;
+    const url = `${this.apiBaseUrl}/dashboard`;
     let params = new HttpParams();
 
     // if (query?.timezone) {
@@ -90,7 +80,7 @@ export class DashboardService {
     // }
     if (query?.since) {
       params = params.set('since', query.since);
-    }  
+    }
     console.log('fetchDashboard', url, params);
 
     return this.http.get<DashboardDto>(url, { params }).pipe(
@@ -108,7 +98,7 @@ export class DashboardService {
           throw error;
         },
       }),
-      tap((data) => {
+      tap(data => {
         console.log('fetchDashboard success', data);
         this.dashboardData$.next(data);
         this.lastRefreshTime$.next(new Date());
@@ -130,7 +120,7 @@ export class DashboardService {
   refreshDashboardIfNeeded(query?: DashboardQuery): void {
     if (!this.isCacheValid()) {
       this.fetchDashboard(query).subscribe({
-        error: (error) => {
+        error: error => {
           console.error('Dashboard refresh failed:', error);
         },
       });
@@ -168,9 +158,7 @@ export class DashboardService {
    */
   private isRetryableError(error: any): boolean {
     return (
-      error.status === 0 ||
-      error.name === 'TimeoutError' ||
-      error.status >= 500
+      error.status === 0 || error.name === 'TimeoutError' || error.status >= 500
     );
   }
 

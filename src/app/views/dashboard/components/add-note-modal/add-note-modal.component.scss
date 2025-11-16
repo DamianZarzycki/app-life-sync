@@ -1,0 +1,94 @@
+// Add Note Modal styling - aligned with login/registration/dashboard components
+
+::ng-deep {
+  // Modal wrapper - ensure centering
+  .add-note-modal-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: auto !important;
+    z-index: 1000 !important;
+
+    // Modal mask (backdrop/overlay)
+    .ant-modal-mask {
+      background-color: rgba(0, 0, 0, 0.45) !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 999 !important;
+    }
+
+    // Modal dialog
+    .ant-modal {
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      position: relative !important;
+      top: auto !important;
+      margin: 0 !important;
+    }
+
+    // Modal header
+    .ant-modal-header {
+      border-bottom: 1px solid #f0f0f0;
+      background-color: white;
+      border-radius: 8px 8px 0 0;
+      padding: 1.5rem;
+    }
+
+    // Modal title
+    .ant-modal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    // Modal body content
+    .ant-modal-body {
+      padding: 0;
+      background-color: white;
+    }
+
+    // Modal content
+    .ant-modal-content {
+      padding: 0;
+      background-color: white;
+    }
+
+    // Close button
+    .ant-modal-close-x {
+      color: #666;
+      font-size: 16px;
+      transition: color 0.2s ease;
+      padding: 0.5rem;
+
+      &:hover {
+        color: #1f2937;
+      }
+    }
+  }
+
+  // Mobile responsive
+  @media (max-width: 640px) {
+    .add-note-modal-wrapper {
+      .ant-modal {
+        width: 90vw !important;
+        max-width: 90vw !important;
+        margin: 0;
+        border-radius: 4px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .ant-modal-header {
+        padding: 1rem;
+      }
+    }
+  }
+}

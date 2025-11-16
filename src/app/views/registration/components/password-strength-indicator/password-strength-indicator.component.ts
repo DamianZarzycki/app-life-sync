@@ -72,7 +72,7 @@ export class PasswordStrengthIndicatorComponent {
    * Builds array of criteria items for display
    * @returns Array of criterion objects with met status and label
    */
-  getCriteria(): Array<{ met: boolean; label: string }> {
+  getCriteria(): { met: boolean; label: string }[] {
     const result = this.strengthResult;
     if (!result) return [];
 

@@ -4,8 +4,9 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
   inject,
+  signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
@@ -13,13 +14,17 @@ import { takeUntil, timeout, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AuthService } from '../../services/auth.service';
-import { LoginError, LoginFormValue, SignInRequest, SignInResponseDto } from '../../../types';
-
+import {
+  LoginError,
+  LoginFormValue,
+  SignInRequest,
+  SignInResponseDto,
+} from '../../../types';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, LoginFormComponent, RouterLink],
+  imports: [LoginFormComponent, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,10 +35,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly destroy$ = new Subject<void>();
 
-  isLoading: boolean = false;
-  error: LoginError | null = null;
-  formValue: LoginFormValue = { email: '', password: '' };
-  returnUrl: string = '/dashboard';
+  // State signals using modern Angular 19 patterns (matching RegistrationComponent)
+  isLoading = signal(false);
+  error = signal<LoginError | null>(null);
+  formValue = signal<LoginFormValue>({ email: '', password: '' });
+  returnUrl = signal<string>('/dashboard');
 
   ngOnInit(): void {
     console.log('LoginComponent ngOnInit');
@@ -44,8 +50,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     // Extract return URL from query params
-    this.returnUrl =
+    const returnUrl =
       this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    this.returnUrl.set(returnUrl);
   }
 
   ngOnDestroy(): void {
@@ -55,25 +62,25 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit(request: SignInRequest): void {
     // Prevent multiple submissions
-    if (this.isLoading) return;
+    if (this.isLoading()) return;
 
-    this.isLoading = true;
-    this.error = null;
-    this.formValue = request;
+    this.isLoading.set(true);
+    this.error.set(null);
+    this.formValue.set(request);
 
     this.authService
       .signIn(request)
       .pipe(
         timeout(10000),
         takeUntil(this.destroy$),
-        catchError((error) => {
-          this.isLoading = false;
-          this.error = this.mapApiErrorToLoginError(error);
+        catchError(error => {
+          this.isLoading.set(false);
+          this.error.set(this.mapApiErrorToLoginError(error));
           return throwError(() => error);
         })
       )
       .subscribe({
-        next: (response) => {
+        next: response => {
           this.handleSignInSuccess(response);
         },
         error: () => {
@@ -83,7 +90,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onErrorDismiss(): void {
-    this.error = null;
+    this.error.set(null);
   }
 
   onResendVerification(email: string): void {
@@ -92,20 +99,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private handleSignInSuccess(response: SignInResponseDto): void {
-    this.isLoading = false;
-    this.error = null;
+    this.isLoading.set(false);
+    this.error.set(null);
 
     // Check if email is verified
     if (!response.user.email_confirmed_at) {
-      this.error = {
+      this.error.set({
         code: 'UNVERIFIED_EMAIL',
         message: 'Please verify your email address to continue.',
-      };
+      });
       return;
     }
 
     // Redirect to dashboard or return URL
-    this.router.navigate([this.returnUrl]);
+    this.router.navigate([this.returnUrl()]);
   }
 
   private mapApiErrorToLoginError(error: HttpErrorResponse): LoginError {

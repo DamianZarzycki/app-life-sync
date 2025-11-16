@@ -1,12 +1,20 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  input,
+  output,
+} from '@angular/core';
+
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { LoginError } from '../../../../../types';
 
 @Component({
   selector: 'app-form-error-alert',
   standalone: true,
-  imports: [CommonModule, NzAlertModule],
+  imports: [NzAlertModule],
   template: `
     @if (error()) {
       <nz-alert
@@ -30,8 +38,8 @@ import { LoginError } from '../../../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormErrorAlertComponent {
-  error = input< LoginError | null >();
-  dismissible = input< boolean >(true);
+  error = input<LoginError | null>();
+  dismissible = input<boolean>(true);
   onDismiss = output<void>();
 
   getAlertType(): 'success' | 'info' | 'warning' | 'error' {

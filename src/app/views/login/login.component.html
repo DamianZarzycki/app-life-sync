@@ -1,8 +1,8 @@
 <div class="login-container">
   <div class="login-content">
     <app-login-form
-      [isLoading]="isLoading"
-      [error]="error"
+      [isLoading]="isLoading()"
+      [error]="error()"
       (onSubmit)="onSubmit($event)"
       (onErrorDismiss)="onErrorDismiss()"
       (onResendVerification)="onResendVerification($event)">

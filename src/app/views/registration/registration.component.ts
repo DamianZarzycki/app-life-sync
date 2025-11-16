@@ -6,7 +6,6 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
@@ -15,7 +14,12 @@ import { throwError } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { RegistrationFormComponent } from './components/registration-form/registration-form.component';
 import { SuccessMessageComponent } from './components/success-message/success-message.component';
-import { LoginError, SignInUserDto, SignUpRequest, SignInResponseDto } from '../../../types';
+import {
+  LoginError,
+  SignInUserDto,
+  SignUpRequest,
+  SignInResponseDto,
+} from '../../../types';
 
 /**
  * RegistrationComponent
@@ -33,11 +37,7 @@ import { LoginError, SignInUserDto, SignUpRequest, SignInResponseDto } from '../
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [
-    CommonModule,
-    RegistrationFormComponent,
-    SuccessMessageComponent,
-  ],
+  imports: [RouterLink, RegistrationFormComponent, SuccessMessageComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -89,7 +89,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .pipe(
         timeout(10000), // 10 second timeout
         takeUntil(this.destroy$),
-        catchError((error) => {
+        catchError(error => {
           this.isLoading.set(false);
           this.error.set(this.mapApiErrorToRegistrationError(error));
           console.error('Sign-up error:', error);
@@ -97,7 +97,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe({
-        next: (response) => this.handleRegistrationSuccess(response),
+        next: response => this.handleRegistrationSuccess(response),
         error: () => {
           // Error already handled in catchError
         },
@@ -139,7 +139,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       const apiError = error.error?.error;
       return {
         code: 'VALIDATION_ERROR',
-        message: apiError?.message || 'Invalid input. Please check your entries.',
+        message:
+          apiError?.message || 'Invalid input. Please check your entries.',
         details: apiError?.details,
       };
     }

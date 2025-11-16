@@ -7,8 +7,7 @@
         [error]="error()"
         (onSubmit)="onSubmit($event)"
         (onErrorDismiss)="onErrorDismiss()"
-        (navigateToLogin)="navigateToLogin()"
-      ></app-registration-form>
+        (navigateToLogin)="navigateToLogin()"></app-registration-form>
 
       <!-- Sign In Link Footer -->
       <div class="registration-footer">
@@ -26,8 +25,7 @@
       <app-success-message
         [email]="registeredEmail() || ''"
         [user]="user() || undefined"
-        (navigateToDashboard)="navigateToDashboard()"
-      ></app-success-message>
+        (navigateToDashboard)="navigateToDashboard()"></app-success-message>
     }
   </div>
 </div>
