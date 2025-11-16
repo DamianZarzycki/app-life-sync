@@ -12,52 +12,50 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import {
-  CategoryDto,
-  NoteDto,
-  CreateNoteCommand,
+  NoteDetailViewModel,
+  UpdateNoteCommand,
   AddNoteError,
-  UUID,
 } from '../../../../../types';
 import { NotesService } from '../../../../services/notes.service';
-import { AddNoteFormComponent } from './add-note-form/add-note-form.component';
+import { EditNoteFormComponent } from './edit-note-form/edit-note-form.component';
 import { AddNoteErrorMapperService } from '../../../../services/add-note-error-mapper.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * AddNoteModalComponent
- * Manages note creation modal using Ng-zorro modal service
+ * EditNoteModalComponent
+ * Manages note edit modal using Ng-zorro modal service
  * Handles form submission, error mapping, and API integration
+ * Uses same pattern as AddNoteModalComponent
  */
 @Component({
-  selector: 'app-add-note-modal',
+  selector: 'app-edit-note-modal',
   standalone: true,
   imports: [NzModalModule, NzIconModule],
   template: '',
-  styleUrls: ['./add-note-modal.component.scss'],
+  styleUrls: ['./edit-note-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddNoteModalComponent {
+export class EditNoteModalComponent {
   // ============
   // Inputs
   // ============
   readonly isOpen = input<boolean>(false);
-  readonly selectedCategory = input<CategoryDto | null>(null);
+  readonly note = input<NoteDetailViewModel | null>(null);
 
   // ============
   // Outputs
   // ============
   readonly modalClosed = output<void>();
-  readonly noteCreated = output<NoteDto>();
+  readonly noteUpdated = output<NoteDetailViewModel>();
 
   // ============
   // State
   // ============
   isSubmitting = signal<boolean>(false);
   error = signal<AddNoteError | null>(null);
-  selectedCategoryId = signal<UUID | null>(null);
   private modalInstance: {
     destroy: () => void;
-    getContentComponent: () => AddNoteFormComponent;
+    getContentComponent: () => EditNoteFormComponent;
   } | null = null;
 
   // ============
@@ -73,10 +71,9 @@ export class AddNoteModalComponent {
      */
     effect(() => {
       const open = this.isOpen();
-      const category = this.selectedCategory();
+      const noteData = this.note();
 
-      if (open && category) {
-        this.selectedCategoryId.set(category.id);
+      if (open && noteData) {
         this.openModal();
       } else if (!open && this.modalInstance) {
         this.modalInstance.destroy();
@@ -91,21 +88,24 @@ export class AddNoteModalComponent {
    * Open modal with form component
    */
   private openModal(): void {
+    const noteData = this.note();
+    if (!noteData) return;
+
     this.error.set(null);
     this.isSubmitting.set(false);
 
-    // Create modal instance with AddNoteFormComponent as content
+    // Create modal instance with EditNoteFormComponent as content
     this.modalInstance = this.modalService.create({
-      nzTitle: `Add Note for ${this.selectedCategory()?.name} category`,
+      nzTitle: 'Edit Note',
       nzClosable: false,
-      nzContent: AddNoteFormComponent,
+      nzContent: EditNoteFormComponent,
       nzCentered: true,
       nzWidth: 600,
       nzKeyboard: true,
       nzOkText: null,
       nzCancelText: null,
       nzFooter: null,
-      nzWrapClassName: 'add-note-modal-wrapper',
+      nzWrapClassName: 'edit-note-modal-wrapper',
       nzZIndex: 1000,
       nzOnCancel: () => {
         this.closeModal();
@@ -116,15 +116,24 @@ export class AddNoteModalComponent {
     setTimeout(() => {
       try {
         const formComponent =
-          this.modalInstance?.getContentComponent() as AddNoteFormComponent;
-        if (formComponent) {
+          this.modalInstance?.getContentComponent() as EditNoteFormComponent;
+        if (formComponent && noteData) {
           // Set component signals
-          formComponent.categoryId.set(this.selectedCategoryId());
+          formComponent.categoryId.set(noteData.category_id);
           formComponent.isSubmitting.set(this.isSubmitting());
+
+          // Pre-fill form with current note data
+          if (formComponent.form) {
+            formComponent.form.patchValue({
+              title: noteData.title,
+              content: noteData.content,
+            });
+            formComponent.characterCount.set(noteData.content.length);
+          }
 
           // Subscribe to form events
           formComponent.noteSubmitted.subscribe(
-            (command: CreateNoteCommand) => {
+            (command: UpdateNoteCommand) => {
               this.onFormSubmit(command);
             }
           );
@@ -142,21 +151,24 @@ export class AddNoteModalComponent {
   /**
    * Handle form submission - call API and manage response
    */
-  private onFormSubmit(command: CreateNoteCommand): void {
+  private onFormSubmit(command: UpdateNoteCommand): void {
+    const noteData = this.note();
+    if (!noteData) return;
+
     this.error.set(null);
     this.isSubmitting.set(true);
 
-    this.notesService.createNote(command).subscribe({
-      next: (note: NoteDto) => {
+    this.notesService.updateNote(noteData.id, command).subscribe({
+      next: (updatedNote: any) => {
         this.isSubmitting.set(false);
-        this.noteCreated.emit(note);
+        this.noteUpdated.emit(updatedNote);
         this.closeModal();
       },
       error: (error: unknown) => {
         this.isSubmitting.set(false);
         const mappedError = this.errorMapperService.mapError(error);
         this.error.set(mappedError);
-        console.error('Error creating note:', mappedError);
+        console.error('Error updating note:', mappedError);
       },
     });
   }
@@ -167,7 +179,6 @@ export class AddNoteModalComponent {
   private closeModal(): void {
     this.error.set(null);
     this.isSubmitting.set(false);
-    this.selectedCategoryId.set(null);
 
     if (this.modalInstance) {
       this.modalInstance.destroy();

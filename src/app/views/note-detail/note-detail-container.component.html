@@ -1,0 +1,72 @@
+<div class="note-detail-container px-4 md:px-6 lg:px-8 py-6 lg:py-8 max-w-7xl mx-auto">
+
+  <!-- Fetch Error Alert -->
+  @if (fetchError()) {
+    <section
+      class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg flex items-start gap-3">
+      <span class="text-2xl flex-shrink-0">⚠️</span>
+      <div class="flex-1 min-w-0">
+        <h3 class="text-red-800 font-semibold mb-1">Error Loading Note</h3>
+        <p class="text-red-700 text-sm">{{ fetchError()!.message }}</p>
+      </div>
+    </section>
+  }
+
+  <!-- Operation Error Alert -->
+  @if (operationError()) {
+    <section
+      class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg flex items-start gap-3">
+      <span class="text-2xl flex-shrink-0">⚠️</span>
+      <div class="flex-1 min-w-0">
+        <h3 class="text-red-800 font-semibold mb-1">Operation Failed</h3>
+        <p class="text-red-700 text-sm">{{ operationError()!.message }}</p>
+      </div>
+    </section>
+  }
+
+  <!-- Loading Skeleton -->
+  @if (isLoading()) {
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Content skeleton -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="h-12 bg-gray-200 rounded-lg animate-pulse"></div>
+        <div class="h-64 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-lg animate-pulse"></div>
+      </div>
+      <!-- Actions skeleton -->
+      <div class="space-y-3">
+        <div class="h-10 bg-gray-200 rounded-lg animate-pulse"></div>
+        <div class="h-10 bg-gray-200 rounded-lg animate-pulse"></div>
+      </div>
+    </div>
+  }
+
+  <!-- Note Content (when loaded and no fetch error) -->
+  @if (!isLoading() && !fetchError() && viewModel()) {
+    <!-- Actions (appears first above content) -->
+    <div class="mb-8">
+      <app-note-actions
+        [isLoading]="isUpdating()"
+        [isDeleting]="isDeleting()"
+        (editClicked)="onEditClicked()"
+        (deleteClicked)="onDeleteClicked()"
+      ></app-note-actions>
+    </div>
+
+    <!-- Content (appears below actions) -->
+    <div>
+      <app-note-content-display
+        [note]="viewModel()!"
+        [isLoading]="isLoading()"
+      ></app-note-content-display>
+    </div>
+  }
+
+  <!-- Edit Modal -->
+  <app-edit-note-modal
+    [isOpen]="isEditModalOpen()"
+    [note]="viewModel()"
+    (noteUpdated)="onNoteUpdated($event)"
+    (modalClosed)="onEditCancelled()"
+  ></app-edit-note-modal>
+</div>
+

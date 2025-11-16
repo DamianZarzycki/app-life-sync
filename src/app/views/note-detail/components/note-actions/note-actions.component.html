@@ -1,0 +1,22 @@
+<div class="actions-container flex gap-2 flex-wrap">
+  <!-- Edit Button -->
+  <button
+    (click)="onEditClick()"
+    [disabled]="isLoading()"
+    aria-label="Edit note"
+    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded transition-colors shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+  >
+    Edit
+  </button>
+
+  <!-- Delete Button -->
+  <button
+    (click)="onDeleteClick()"
+    [disabled]="isDeleting()"
+    aria-label="Delete note"
+    class="px-4 py-2 border-2 border-red-600 text-red-600 hover:text-red-700 hover:border-red-700 font-semibold rounded transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+  >
+    Delete
+  </button>
+</div>
+

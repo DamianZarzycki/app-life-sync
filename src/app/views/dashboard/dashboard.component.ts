@@ -226,6 +226,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Handle view notes click from CategoryCard component
+   * Navigate to notes list for the category
+   */
+  onViewNotesClick(categoryId: UUID): void {
+    this.router.navigate(['/notes'], { queryParams: { categoryId } });
+  }
+
+  /**
    * Open add note modal with selected category
    */
   private openAddNoteModal(categoryId: UUID): void {

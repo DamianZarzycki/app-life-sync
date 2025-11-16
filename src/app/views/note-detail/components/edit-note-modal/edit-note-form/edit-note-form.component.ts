@@ -21,18 +21,16 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import {
-  AddNoteFormValue,
-  CreateNoteCommand,
-  UUID,
+  UpdateNoteCommand,
 } from '../../../../../../types';
 
 /**
- * AddNoteFormComponent
- * Handles note form display, validation, and submission
- * Used as content in Ng-zorro modal
+ * EditNoteFormComponent
+ * Handles note edit form display, validation, and submission
+ * Used as content in Ng-zorro modal (similar to AddNoteFormComponent)
  */
 @Component({
-  selector: 'app-add-note-form',
+  selector: 'app-edit-note-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -41,21 +39,21 @@ import {
     NzSpaceModule,
     NzSpinModule,
   ],
-  templateUrl: './add-note-form.component.html',
-  styleUrls: ['./add-note-form.component.scss'],
+  templateUrl: './edit-note-form.component.html',
+  styleUrls: ['./edit-note-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddNoteFormComponent implements OnInit, OnDestroy {
+export class EditNoteFormComponent implements OnInit, OnDestroy {
   // ============
   // Inputs
   // ============
-  categoryId = signal<UUID | null>(null);
+  categoryId = signal<string | null>(null);
   isSubmitting = signal<boolean>(false);
 
   // ============
   // Outputs
   // ============
-  readonly noteSubmitted = output<CreateNoteCommand>();
+  readonly noteSubmitted = output<UpdateNoteCommand>();
   readonly formCancelled = output<void>();
 
   // ============
@@ -245,9 +243,9 @@ export class AddNoteFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const formValue = this.form.getRawValue() as AddNoteFormValue;
+    const formValue = this.form.getRawValue();
 
-    const command: CreateNoteCommand = {
+    const command: UpdateNoteCommand = {
       category_id: this.categoryId()!,
       title: formValue.title,
       content: formValue.content,
@@ -273,3 +271,4 @@ export class AddNoteFormComponent implements OnInit, OnDestroy {
     this.contentTouched.set(true);
   }
 }
+

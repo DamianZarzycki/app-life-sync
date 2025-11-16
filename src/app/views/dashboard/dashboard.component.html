@@ -107,9 +107,9 @@
               [category]="category"
               [noteCount]="category.notes_count"
               [maxNotes]="10"
-              [isFocusCategory]="true"
               [isLoading]="false"
-              (addNoteClick)="onAddNoteClick($event)">
+              (addNoteClick)="onAddNoteClick($event)"
+              (viewNotesClick)="onViewNotesClick($event)">
             </app-category-card>
           }
         </div>

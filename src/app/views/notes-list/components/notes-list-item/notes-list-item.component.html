@@ -1,0 +1,30 @@
+@if (note(); as noteData) {
+  <div
+    class="notes-list-item bg-white rounded-lg shadow-sm hover:shadow-lg p-5 md:p-6 transition-all duration-300 border-l-4 border-indigo-600 hover:border-indigo-700 cursor-pointer group"
+  >
+    <div class="flex justify-between items-start gap-4">
+      <div class="flex-1 min-w-0">
+        <!-- Title -->
+        <h3 class="text-lg font-bold text-gray-900 mb-2 truncate group-hover:text-indigo-600 transition-colors">
+          {{ noteData.title || 'Untitled Note' }}
+        </h3>
+
+        <!-- Content excerpt -->
+        <p class="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+          {{ getExcerpt(noteData.content) }}
+        </p>
+
+        <!-- Metadata -->
+        <div class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          {{ formatDate(noteData.created_at) }}
+        </div>
+      </div>
+
+      <!-- Arrow icon -->
+      <div class="flex-shrink-0 text-indigo-400 group-hover:text-indigo-600 text-2xl transition-colors duration-300 transform group-hover:translate-x-1">
+        →
+      </div>
+    </div>
+  </div>
+}
+

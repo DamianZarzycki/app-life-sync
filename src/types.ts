@@ -472,3 +472,54 @@ export interface AddNoteModalState {
   formValue: AddNoteFormValue; // Current form values
   selectedCategoryId: UUID | null; // Category user is adding note to
 }
+
+// =====================
+// Note Detail View Types
+// =====================
+
+/**
+ * NoteDetailViewState
+ * Represents the complete state of the Note Detail View container
+ */
+export interface NoteDetailViewState {
+  // Data from API
+  note: NoteDto | null;
+
+  // Loading/Fetching States
+  isLoading: boolean;
+  isUpdating: boolean;
+  isDeleting: boolean;
+
+  // Modal States
+  isEditModalOpen: boolean;
+  isDeleteConfirmationOpen: boolean;
+
+  // Form State (for edit modal)
+  editFormValue: UpdateNoteCommand | null;
+  editFormError: AddNoteError | null;
+
+  // Error State
+  fetchError: AddNoteError | null;
+  operationError: AddNoteError | null;
+
+  // UI Feedback
+  successMessage: string | null;
+}
+
+/**
+ * NoteDetailViewModel
+ * Extends NoteDto with computed/formatted display properties for UI rendering
+ */
+export interface NoteDetailViewModel extends NoteDto {
+  // Formatted dates for display
+  createdAtFormatted: string;
+  updatedAtFormatted: string;
+
+  // Category information (resolved from service)
+  categoryName: string;
+  categoryColor: string;
+
+  // Display flags
+  isEdited: boolean;
+  readableContent: string;
+}
