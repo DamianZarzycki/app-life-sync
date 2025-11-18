@@ -8,10 +8,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NoteDetailContainerComponent } from './note-detail-container.component';
 import { NotesService } from '../../services/notes.service';
 import { DashboardService } from '../../services/dashboard.service';
-import {
-  NoteDto,
-  UpdateNoteCommand,
-} from '../../../types';
+import { NoteDto, UpdateNoteCommand } from '../../../types';
 
 describe('NoteDetailContainerComponent', () => {
   let component: NoteDetailContainerComponent;
@@ -84,7 +81,7 @@ describe('NoteDetailContainerComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should fetch note on component init', (done) => {
+    it('should fetch note on component init', done => {
       notesService.getNoteById.and.returnValue(of(mockNoteDto));
 
       fixture.detectChanges();
@@ -97,7 +94,7 @@ describe('NoteDetailContainerComponent', () => {
       }, 100);
     });
 
-    it('should handle note fetch error (404)', (done) => {
+    it('should handle note fetch error (404)', done => {
       const error = {
         status: 404,
         error: {
@@ -116,7 +113,7 @@ describe('NoteDetailContainerComponent', () => {
       }, 100);
     });
 
-    it('should handle unauthorized error (401)', (done) => {
+    it('should handle unauthorized error (401)', done => {
       const error = {
         status: 401,
         error: {
@@ -136,7 +133,7 @@ describe('NoteDetailContainerComponent', () => {
   });
 
   describe('Edit Note', () => {
-    beforeEach((done) => {
+    beforeEach(done => {
       notesService.getNoteById.and.returnValue(of(mockNoteDto));
       fixture.detectChanges();
 
@@ -150,7 +147,7 @@ describe('NoteDetailContainerComponent', () => {
       expect(component.isEditModalOpen()).toBe(true);
     });
 
-    it('should submit edit form and update note', (done) => {
+    it('should submit edit form and update note', done => {
       const updatedNote: NoteDto = {
         ...mockNoteDto,
         title: 'Updated Title',
@@ -181,7 +178,7 @@ describe('NoteDetailContainerComponent', () => {
       }, 100);
     });
 
-    it('should handle edit error (422 validation)', (done) => {
+    it('should handle edit error (422 validation)', done => {
       const error = {
         status: 422,
         error: {
@@ -218,7 +215,7 @@ describe('NoteDetailContainerComponent', () => {
   });
 
   describe('Delete Note', () => {
-    beforeEach((done) => {
+    beforeEach(done => {
       notesService.getNoteById.and.returnValue(of(mockNoteDto));
       fixture.detectChanges();
 
@@ -232,7 +229,7 @@ describe('NoteDetailContainerComponent', () => {
       expect(modalService.confirm).toHaveBeenCalled();
     });
 
-    it('should delete note after confirmation', (done) => {
+    it('should delete note after confirmation', done => {
       notesService.deleteNote.and.returnValue(of(void 0));
 
       // Get the confirm callback from the modal service
@@ -261,7 +258,7 @@ describe('NoteDetailContainerComponent', () => {
       }
     });
 
-    it('should handle delete error', (done) => {
+    it('should handle delete error', done => {
       const error = {
         status: 404,
         error: {
@@ -304,7 +301,7 @@ describe('NoteDetailContainerComponent', () => {
   });
 
   describe('View Model Transformation', () => {
-    it('should format dates correctly', (done) => {
+    it('should format dates correctly', done => {
       notesService.getNoteById.and.returnValue(of(mockNoteDto));
 
       fixture.detectChanges();
@@ -318,7 +315,7 @@ describe('NoteDetailContainerComponent', () => {
       }, 100);
     });
 
-    it('should identify edited notes', (done) => {
+    it('should identify edited notes', done => {
       const editedNote: NoteDto = {
         ...mockNoteDto,
         updated_at: '2025-01-15T12:00:00Z',
@@ -339,4 +336,3 @@ describe('NoteDetailContainerComponent', () => {
 
 // Import Location at the top of the file if not already imported
 import { Location } from '@angular/common';
-

@@ -18,7 +18,7 @@ describe('NoteActionsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit editClicked event when edit button is clicked', (done) => {
+  it('should emit editClicked event when edit button is clicked', done => {
     spyOn(component.editClicked, 'emit');
 
     component.onEditClick();
@@ -27,7 +27,7 @@ describe('NoteActionsComponent', () => {
     done();
   });
 
-  it('should emit deleteClicked event when delete button is clicked', (done) => {
+  it('should emit deleteClicked event when delete button is clicked', done => {
     spyOn(component.deleteClicked, 'emit');
 
     component.onDeleteClick();
@@ -98,4 +98,3 @@ describe('NoteActionsComponent', () => {
     expect(deleteIcon).toBeTruthy();
   });
 });
-

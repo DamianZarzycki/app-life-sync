@@ -33,7 +33,11 @@
     // Modal header - styled with indigo/purple theme
     .ant-modal-header {
       border-bottom: 1px solid #e5e7eb; // gray-200
-      background: linear-gradient(to right, #4f46e5, #7c3aed); // indigo-600 to purple-600
+      background: linear-gradient(
+        to right,
+        #4f46e5,
+        #7c3aed
+      ); // indigo-600 to purple-600
       border-radius: 0.5rem 0.5rem 0 0;
       padding: 1rem 1.5rem;
       margin: 0;

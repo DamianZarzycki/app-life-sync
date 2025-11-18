@@ -49,4 +49,3 @@ export class NotesListItemComponent {
     return content.length > 100 ? content.substring(0, 100) + '...' : content;
   }
 }
-

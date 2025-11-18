@@ -34,23 +34,14 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-  RouterModule,
-} from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
-import {
-  NzModalService,
-  NzModalModule,
-} from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService, NzModalModule } from 'ng-zorro-antd/modal';
+import { NzMessageService, NzMessageModule } from 'ng-zorro-antd/message';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import {
-  takeUntilDestroyed,
-} from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
 
 import {
@@ -66,15 +57,9 @@ import {
   CATEGORY_COLOR_MAP,
   getCategoryColorMapping,
 } from '../../models/dashboard.models';
-import {
-  NoteContentDisplayComponent,
-} from './components/note-content-display/note-content-display.component';
-import {
-  NoteActionsComponent,
-} from './components/note-actions/note-actions.component';
-import {
-  EditNoteModalComponent,
-} from './components/edit-note-modal/edit-note-modal.component';
+import { NoteContentDisplayComponent } from './components/note-content-display/note-content-display.component';
+import { NoteActionsComponent } from './components/note-actions/note-actions.component';
+import { EditNoteModalComponent } from './components/edit-note-modal/edit-note-modal.component';
 
 @Component({
   selector: 'app-note-detail-container',
@@ -83,6 +68,7 @@ import {
     CommonModule,
     RouterModule,
     NzModalModule,
+    NzMessageModule,
     NzAlertModule,
     NzSpinModule,
     NoteContentDisplayComponent,
@@ -118,13 +104,13 @@ export class NoteDetailContainerComponent implements OnInit {
   });
 
   // Computed properties
-  readonly viewModel = computed(() => this.transformToViewModel(this.viewState().note));
+  readonly viewModel = computed(() =>
+    this.transformToViewModel(this.viewState().note)
+  );
   readonly isLoading = computed(() => this.viewState().isLoading);
   readonly isUpdating = computed(() => this.viewState().isUpdating);
   readonly isDeleting = computed(() => this.viewState().isDeleting);
-  readonly isEditModalOpen = computed(
-    () => this.viewState().isEditModalOpen,
-  );
+  readonly isEditModalOpen = computed(() => this.viewState().isEditModalOpen);
   readonly fetchError = computed(() => this.viewState().fetchError);
   readonly operationError = computed(() => this.viewState().operationError);
   readonly editFormError = computed(() => this.viewState().editFormError);
@@ -140,22 +126,22 @@ export class NoteDetailContainerComponent implements OnInit {
     this.route.params
       .pipe(
         // Extract noteId from route params and fetch the note
-        switchMap((params) => this.notesService.getNote(params['noteId'])),
+        switchMap(params => this.notesService.getNote(params['noteId'])),
         // Automatic cleanup on component destroy
-        takeUntilDestroyed(),
+        takeUntilDestroyed()
       )
       .subscribe({
-        next: (note) => {
+        next: note => {
           // Update state with fetched note data
-          this.viewState.update((state) => ({
+          this.viewState.update(state => ({
             ...state,
             note,
             isLoading: false,
           }));
         },
-        error: (error) => {
+        error: error => {
           // Map HTTP error to user-friendly error format
-          this.viewState.update((state) => ({
+          this.viewState.update(state => ({
             ...state,
             fetchError: this.mapErrorToAddNoteError(error),
             isLoading: false,
@@ -179,7 +165,7 @@ export class NoteDetailContainerComponent implements OnInit {
    * Open the edit modal
    */
   onEditClicked(): void {
-    this.viewState.update((state) => ({
+    this.viewState.update(state => ({
       ...state,
       isEditModalOpen: true,
     }));
@@ -189,7 +175,7 @@ export class NoteDetailContainerComponent implements OnInit {
    * Handle edit modal cancellation
    */
   onEditCancelled(): void {
-    this.viewState.update((state) => ({
+    this.viewState.update(state => ({
       ...state,
       isEditModalOpen: false,
     }));
@@ -200,7 +186,7 @@ export class NoteDetailContainerComponent implements OnInit {
    * Modal component handles API call and emits updated note
    */
   onNoteUpdated(updatedNote: NoteDto): void {
-    this.viewState.update((state) => ({
+    this.viewState.update(state => ({
       ...state,
       note: updatedNote,
       isEditModalOpen: false,
@@ -235,7 +221,7 @@ export class NoteDetailContainerComponent implements OnInit {
    * Handle delete confirmation
    */
   private onDeleteConfirmed(noteId: string): void {
-    this.viewState.update((state) => ({
+    this.viewState.update(state => ({
       ...state,
       isDeleting: true,
     }));
@@ -243,7 +229,7 @@ export class NoteDetailContainerComponent implements OnInit {
     this.notesService.deleteNote(noteId).subscribe({
       next: () => {
         this.messageService.success('Note deleted successfully');
-        this.viewState.update((state) => ({
+        this.viewState.update(state => ({
           ...state,
           isDeleting: false,
         }));
@@ -253,9 +239,9 @@ export class NoteDetailContainerComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         }, 1000);
       },
-      error: (error) => {
+      error: error => {
         const mappedError = this.mapErrorToAddNoteError(error);
-        this.viewState.update((state) => ({
+        this.viewState.update(state => ({
           ...state,
           operationError: mappedError,
           isDeleting: false,
@@ -272,7 +258,7 @@ export class NoteDetailContainerComponent implements OnInit {
    * category metadata in NoteDto response, or category cache service implementation.
    */
   private transformToViewModel(
-    note: NoteDto | null,
+    note: NoteDto | null
   ): NoteDetailViewModel | null {
     if (!note) return null;
 
@@ -342,4 +328,3 @@ export class NoteDetailContainerComponent implements OnInit {
     };
   }
 }
-

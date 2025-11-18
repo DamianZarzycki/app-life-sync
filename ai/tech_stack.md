@@ -1,6 +1,7 @@
 # Tech Stack
 
 ## Frontend
+
 - Angular 19
 - TypeScript 5.9.3
 - Tailwind 4

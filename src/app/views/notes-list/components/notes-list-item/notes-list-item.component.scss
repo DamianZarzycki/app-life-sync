@@ -6,13 +6,18 @@ $border-color: #e5e7eb; // gray-200
 $text-dark: #1f2937; // gray-900
 $text-light: #6b7280; // gray-600
 $shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-md:
+  0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg:
+  0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
 .notes-list-item {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
+  margin-bottom: 0.75rem; // space-y-3 equivalent
 
   // Enhanced hover animation matching dashboard interactivity
   &:hover {
@@ -57,10 +62,6 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-
-    &:hover {
-      transform: translateX(4px);
-    }
   }
 
   // Tablet and up - slightly larger hit area
@@ -70,4 +71,3 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
     }
   }
 }
-

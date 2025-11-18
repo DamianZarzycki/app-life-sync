@@ -4,11 +4,10 @@
   role="button"
   [attr.aria-label]="'View notes for ' + category()?.name"
   tabindex="0"
-  class="cursor-pointer"
->
+  class="cursor-pointer">
   <!-- Card Header -->
   <div class="category-card__header">
-    <h3 class="category-card__title">{{ category()?.name | uppercase}}</h3>
+    <h3 class="category-card__title">{{ category()?.name | uppercase }}</h3>
   </div>
 
   <!-- Card Body -->
@@ -41,9 +40,10 @@
       class="category-card__add-note-btn">
       @if (!isLoading()) {
         <i nz-icon nzType="plus" nzTheme="outline"></i>
-        <span class="category-card__add-note-btn-text" [title]="categoryLabel()">Add Note</span>
-      }
-      @else {
+        <span class="category-card__add-note-btn-text" [title]="categoryLabel()"
+          >Add Note</span
+        >
+      } @else {
         <nz-spin nzSimple [nzSize]="'small'"></nz-spin>
       }
     </button>

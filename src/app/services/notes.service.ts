@@ -32,7 +32,7 @@ export class NotesService {
 
     if (query.category_id) {
       if (Array.isArray(query.category_id)) {
-        query.category_id.forEach((id) => {
+        query.category_id.forEach(id => {
           params = params.append('category_id', id);
         });
       } else {

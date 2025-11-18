@@ -19,14 +19,13 @@
 
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  NoteDetailViewModel,
-} from '../../../../../types';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NoteDetailViewModel } from '../../../../../types';
 
 @Component({
   selector: 'app-note-content-display',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NzIconModule],
   templateUrl: './note-content-display.component.html',
   styleUrl: './note-content-display.component.scss',
 })
@@ -43,4 +42,3 @@ export class NoteContentDisplayComponent {
    */
   readonly isLoading = input<boolean>(false);
 }
-

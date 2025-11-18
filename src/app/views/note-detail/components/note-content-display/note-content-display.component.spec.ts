@@ -38,9 +38,7 @@ describe('NoteContentDisplayComponent', () => {
 
   it('should display note title', () => {
     TestBed.runInInjectionContext(() => {
-      component.note = jasmine
-        .createSpy()
-        .and.returnValue(mockNoteViewModel);
+      component.note = jasmine.createSpy().and.returnValue(mockNoteViewModel);
     });
 
     fixture.detectChanges();
@@ -53,9 +51,7 @@ describe('NoteContentDisplayComponent', () => {
     const noteWithoutTitle = { ...mockNoteViewModel, title: null };
 
     TestBed.runInInjectionContext(() => {
-      component.note = jasmine
-        .createSpy()
-        .and.returnValue(noteWithoutTitle);
+      component.note = jasmine.createSpy().and.returnValue(noteWithoutTitle);
     });
 
     fixture.detectChanges();
@@ -66,9 +62,7 @@ describe('NoteContentDisplayComponent', () => {
 
   it('should display note content', () => {
     TestBed.runInInjectionContext(() => {
-      component.note = jasmine
-        .createSpy()
-        .and.returnValue(mockNoteViewModel);
+      component.note = jasmine.createSpy().and.returnValue(mockNoteViewModel);
     });
 
     fixture.detectChanges();
@@ -81,9 +75,7 @@ describe('NoteContentDisplayComponent', () => {
 
   it('should display creation date', () => {
     TestBed.runInInjectionContext(() => {
-      component.note = jasmine
-        .createSpy()
-        .and.returnValue(mockNoteViewModel);
+      component.note = jasmine.createSpy().and.returnValue(mockNoteViewModel);
     });
 
     fixture.detectChanges();
@@ -95,9 +87,7 @@ describe('NoteContentDisplayComponent', () => {
 
   it('should display category name and color', () => {
     TestBed.runInInjectionContext(() => {
-      component.note = jasmine
-        .createSpy()
-        .and.returnValue(mockNoteViewModel);
+      component.note = jasmine.createSpy().and.returnValue(mockNoteViewModel);
     });
 
     fixture.detectChanges();
@@ -126,9 +116,7 @@ describe('NoteContentDisplayComponent', () => {
 
   it('should not show edited indicator when note is not edited', () => {
     TestBed.runInInjectionContext(() => {
-      component.note = jasmine
-        .createSpy()
-        .and.returnValue(mockNoteViewModel);
+      component.note = jasmine.createSpy().and.returnValue(mockNoteViewModel);
     });
 
     fixture.detectChanges();
@@ -146,8 +134,9 @@ describe('NoteContentDisplayComponent', () => {
 
     fixture.detectChanges();
 
-    const wrapper = fixture.nativeElement.querySelector('.note-content-wrapper');
+    const wrapper = fixture.nativeElement.querySelector(
+      '.note-content-wrapper'
+    );
     expect(wrapper).toBeFalsy();
   });
 });
-
