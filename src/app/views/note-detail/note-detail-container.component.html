@@ -1,5 +1,5 @@
-<div class="note-detail-container px-4 md:px-6 lg:px-8 py-6 lg:py-8 max-w-7xl mx-auto">
-
+<div
+  class="note-detail-container px-4 md:px-6 lg:px-8 py-6 lg:py-8 max-w-7xl mx-auto">
   <!-- Fetch Error Alert -->
   @if (fetchError()) {
     <section
@@ -30,7 +30,8 @@
       <!-- Content skeleton -->
       <div class="lg:col-span-2 space-y-4">
         <div class="h-12 bg-gray-200 rounded-lg animate-pulse"></div>
-        <div class="h-64 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-lg animate-pulse"></div>
+        <div
+          class="h-64 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-lg animate-pulse"></div>
       </div>
       <!-- Actions skeleton -->
       <div class="space-y-3">
@@ -48,16 +49,14 @@
         [isLoading]="isUpdating()"
         [isDeleting]="isDeleting()"
         (editClicked)="onEditClicked()"
-        (deleteClicked)="onDeleteClicked()"
-      ></app-note-actions>
+        (deleteClicked)="onDeleteClicked()"></app-note-actions>
     </div>
 
     <!-- Content (appears below actions) -->
     <div>
       <app-note-content-display
         [note]="viewModel()!"
-        [isLoading]="isLoading()"
-      ></app-note-content-display>
+        [isLoading]="isLoading()"></app-note-content-display>
     </div>
   }
 
@@ -66,7 +65,5 @@
     [isOpen]="isEditModalOpen()"
     [note]="viewModel()"
     (noteUpdated)="onNoteUpdated($event)"
-    (modalClosed)="onEditCancelled()"
-  ></app-edit-note-modal>
+    (modalClosed)="onEditCancelled()"></app-edit-note-modal>
 </div>
-

@@ -36,8 +36,8 @@ import { LoginError, SignInRequest } from '../../../../../types';
     NzButtonModule,
     NzSpinModule,
     FormErrorAlertComponent,
-    VerifyEmailPromptComponent
-],
+    VerifyEmailPromptComponent,
+  ],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

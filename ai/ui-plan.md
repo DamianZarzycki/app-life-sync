@@ -7,6 +7,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
 ## 2. View List
 
 ### a. Login View
+
 - **View Name**: Login
 - **View Path**: `/login`
 - **Main Purpose**: To allow existing users to authenticate and access their accounts.
@@ -18,6 +19,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Security**: The form will submit credentials over HTTPS. No sensitive data will be stored in the URL.
 
 ### b. Registration View
+
 - **View Name**: Registration
 - **View Path**: `/register`
 - **Main Purpose**: To allow new users to create an account.
@@ -29,6 +31,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Security**: Password strength indicators will be used.
 
 ### c. Email Verification Info View
+
 - **View Name**: Email Verification Info
 - **View Path**: `/verify-email`
 - **Main Purpose**: To inform the user that a verification email has been sent and they need to check their inbox.
@@ -38,6 +41,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **UX**: Provides a clear next step for the user after registration, reducing confusion.
 
 ### d. Onboarding Wizard View
+
 - **View Name**: Onboarding Wizard
 - **View Path**: `/onboarding`
 - **Main Purpose**: To guide new users through the initial setup of their profile (timezone) and preferences (focus categories). This is a mandatory step after their first login.
@@ -60,6 +64,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Security**: All data is fetched based on the authenticated user's context.
 
 ### f. Preferences View
+
 - **View Name**: Preferences
 - **View Path**: `/preferences`
 - **Main Purpose**: To allow users to manage their application settings.
@@ -70,6 +75,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Accessibility**: All form controls will be clearly labeled.
 
 ### g. Report Detail View
+
 - **View Name**: Report Detail
 - **View Path**: `/reports/:id`
 - **Main Purpose**: To display the full content of a single generated report.
@@ -81,6 +87,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - **Security**: The report's HTML content will be rendered inside a sandboxed `<iframe>` to prevent XSS vulnerabilities.
 
 ### h. Note Detail View
+
 - **View Name**: Note Detail
 - **View Path**: `/notes/:category/:id`
 - **Main Purpose**: To display the full content of a user-added note and allow the user to edit or delete it.
@@ -93,7 +100,7 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
   - `NzPopconfirm` for delete confirmation
   - Browser back button in the top-navbar or page header
 - **UX, Accessibility, and Security Considerations**:
-  - **UX**: 
+  - **UX**:
     - Clean, spacious layout with clear typography for readability
     - Edit button opens a modal with the note pre-filled for editing; closing the modal returns to the Note Detail View (not the dashboard)
     - Delete button triggers a confirmation dialog to prevent accidental deletion
@@ -101,15 +108,15 @@ The LifeSync application will be a Single-Page Application (SPA) built with Angu
     - Loading skeleton while fetching note data; error message if note not found or fetch fails
     - Optimistic updates when editing the note
     - Browser back button for navigation to previous route
-  - **Accessibility**: 
+  - **Accessibility**:
     - All interactive elements (Edit, Delete buttons) are keyboard accessible and have clear focus states
     - Semantic HTML with proper heading hierarchy (h1 for note title)
     - ARIA labels on action buttons for screen readers
     - Proper focus management when modal opens/closes
-  - **Security**: 
+  - **Security**:
     - Backend validates that the authenticated user owns the note before allowing view/edit/delete operations
     - No sensitive user data stored in URL parameters (only note ID)
-    - Sanitize note content on display to prevent XSS if any dynamic content is introduced in future 
+    - Sanitize note content on display to prevent XSS if any dynamic content is introduced in future
 
 ## 3. User Journey Map
 

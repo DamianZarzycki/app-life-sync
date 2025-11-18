@@ -12,16 +12,6 @@ $danger-hover: #b91c1c; // red-700
     font-size: 0.875rem; // sm text size
     cursor: pointer;
 
-    // Hover state
-    &:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
-
-    // Active state
-    &:active:not(:disabled) {
-      transform: translateY(0);
-    }
-
     // Disabled state
     &:disabled {
       opacity: 0.6;
@@ -39,4 +29,3 @@ $danger-hover: #b91c1c; // red-700
     }
   }
 }
-

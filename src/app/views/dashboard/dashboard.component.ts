@@ -76,11 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Create combined loading state
     this.loadingState$ = this.loading$.pipe(
-      map(isLoading =>
-        isLoading
-          ? 'loading'
-          : 'success'
-      )
+      map(isLoading => (isLoading ? 'loading' : 'success'))
     );
   }
 

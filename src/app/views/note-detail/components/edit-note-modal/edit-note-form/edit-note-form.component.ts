@@ -20,9 +20,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import {
-  UpdateNoteCommand,
-} from '../../../../../../types';
+import { UpdateNoteCommand } from '../../../../../../types';
 
 /**
  * EditNoteFormComponent
@@ -271,4 +269,3 @@ export class EditNoteFormComponent implements OnInit, OnDestroy {
     this.contentTouched.set(true);
   }
 }
-

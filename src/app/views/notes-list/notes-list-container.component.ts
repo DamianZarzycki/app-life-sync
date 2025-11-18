@@ -23,34 +23,17 @@
  * - Automatic cleanup via takeUntilDestroyed()
  */
 
-import {
-  Component,
-  OnInit,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
-import {
-  NzSpinModule,
-} from 'ng-zorro-antd/spin';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import {
-  takeUntilDestroyed,
-} from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
 
-import {
-  NoteDto,
-  ListNotesQuery,
-  UUID,
-} from '../../../types';
+import { NoteDto, ListNotesQuery, UUID } from '../../../types';
 import { NotesService } from '../../services/notes.service';
 import { DashboardService } from '../../services/dashboard.service';
 import { NotesListItemComponent } from './components/notes-list-item/notes-list-item.component';
@@ -78,7 +61,7 @@ interface NotesListViewState {
   templateUrl: './notes-list-container.component.html',
   // styleUrl: './notes-list-container.component.scss',
 })
-export class NotesListContainerComponent implements OnInit {
+export class NotesListContainerComponent {
   // Services
   private readonly notesService = inject(NotesService);
   private readonly route = inject(ActivatedRoute);
@@ -112,13 +95,13 @@ export class NotesListContainerComponent implements OnInit {
     // Listen to query param changes for categoryId
     this.route.queryParams
       .pipe(
-        switchMap((params) => {
+        switchMap(params => {
           const catId = params['categoryId'];
           if (!catId) {
             return [];
           }
 
-          this.viewState.update((state) => ({
+          this.viewState.update(state => ({
             ...state,
             categoryId: catId,
             isLoading: true,
@@ -136,11 +119,11 @@ export class NotesListContainerComponent implements OnInit {
 
           return this.notesService.listNotes(query);
         }),
-        takeUntilDestroyed(),
+        takeUntilDestroyed()
       )
       .subscribe({
-        next: (response) => {
-          this.viewState.update((state) => ({
+        next: response => {
+          this.viewState.update(state => ({
             ...state,
             notes: response.items,
             totalCount: response.total,
@@ -148,8 +131,8 @@ export class NotesListContainerComponent implements OnInit {
             hasMore: response.offset + response.limit < response.total,
           }));
         },
-        error: (error) => {
-          this.viewState.update((state) => ({
+        error: error => {
+          this.viewState.update(state => ({
             ...state,
             error: this.mapErrorToMessage(error),
             isLoading: false,
@@ -193,14 +176,14 @@ export class NotesListContainerComponent implements OnInit {
       sort: 'created_at_desc',
     };
 
-    this.viewState.update((state) => ({
+    this.viewState.update(state => ({
       ...state,
       isLoading: true,
     }));
 
     this.notesService.listNotes(query).subscribe({
-      next: (response) => {
-        this.viewState.update((state) => ({
+      next: response => {
+        this.viewState.update(state => ({
           ...state,
           notes: [...state.notes, ...response.items],
           currentOffset: newOffset,
@@ -208,8 +191,8 @@ export class NotesListContainerComponent implements OnInit {
           hasMore: newOffset + response.limit < response.total,
         }));
       },
-      error: (error) => {
-        this.viewState.update((state) => ({
+      error: error => {
+        this.viewState.update(state => ({
           ...state,
           error: this.mapErrorToMessage(error),
           isLoading: false,
@@ -252,4 +235,3 @@ export class NotesListContainerComponent implements OnInit {
     return 'Notes';
   }
 }
-
