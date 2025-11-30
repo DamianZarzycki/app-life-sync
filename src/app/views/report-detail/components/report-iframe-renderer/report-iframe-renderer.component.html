@@ -1,0 +1,13 @@
+<!-- Report IFrame Renderer -->
+<div class="iframe-wrapper w-full h-96 relative overflow-hidden rounded">
+  <iframe
+    #iframe
+    class="report-iframe w-full h-full border-0 bg-white"
+    [title]="iframeTitle()"
+    sandbox="allow-same-origin allow-popups"
+    frameborder="0"
+    scrolling="yes"
+    [srcdoc]="htmlContent()"
+    [src]="htmlContent()"
+  ></iframe>
+</div>

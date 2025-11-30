@@ -1,0 +1,11 @@
+<div class="fixed bottom-4 right-4 z-50 max-w-md w-full md:w-96 space-y-2">
+  @if (notifications$ | async; as notifications) {
+    @for (notification of notifications; track notification.id) {
+      <app-notification
+        [notification]="notification"
+        (close)="onCloseNotification($event)">
+      </app-notification>
+    }
+  }
+</div>
+

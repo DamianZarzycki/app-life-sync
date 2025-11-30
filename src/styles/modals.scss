@@ -1,0 +1,229 @@
+// ============================================
+// MODAL MIXINS AND SHARED STYLES
+// ============================================
+// Reusable modal styling for consistency across all modals
+// Design system: Indigo/purple primary, gray neutrals, red errors
+// Responsive: Mobile-first with md: and lg: breakpoints
+// Accessibility: Focus-visible styles and semantic HTML
+
+// ============================================
+// COLORS & VARIABLES
+// ============================================
+$modal-header-primary: #4f46e5; // indigo-600
+$modal-header-secondary: #7c3aed; // purple-600
+$modal-border-color: #e5e7eb; // gray-200
+$modal-bg-overlay: rgba(0, 0, 0, 0.5);
+$modal-close-hover-bg: rgba(255, 255, 255, 0.2);
+$modal-close-focus-bg: rgba(255, 255, 255, 0.15);
+
+// ============================================
+// MIXIN: Modal Wrapper Container
+// ============================================
+@mixin modal-wrapper-container() {
+  // Let Ant Design handle centering with nzCentered: true
+  // We only style the overlay
+  background-color: $modal-bg-overlay !important;
+}
+
+// ============================================
+// MIXIN: Modal Dialog Box
+// ============================================
+@mixin modal-dialog() {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+// ============================================
+// MIXIN: Modal Header
+// ============================================
+@mixin modal-header() {
+  border-bottom: 1px solid $modal-border-color;
+  background: linear-gradient(
+    to right,
+    $modal-header-primary,
+    $modal-header-secondary
+  );
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 1rem 1.5rem;
+  margin: 0;
+  position: relative; // Ensure close button positioning context
+}
+
+// ============================================
+// MIXIN: Modal Title
+// ============================================
+@mixin modal-title() {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.5;
+}
+
+// ============================================
+// MIXIN: Modal Body
+// ============================================
+@mixin modal-body() {
+  padding: 0;
+  background-color: white;
+}
+
+// ============================================
+// MIXIN: Modal Content
+// ============================================
+@mixin modal-content() {
+  padding: 0;
+  background-color: white;
+  border-radius: 0.5rem;
+}
+
+// ============================================
+// MIXIN: Modal Close Button
+// ============================================
+@mixin modal-close-button() {
+  top: 1rem !important;
+  right: 1rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  line-height: 2rem !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10;
+}
+
+// ============================================
+// MIXIN: Modal Close Icon (X button)
+// ============================================
+@mixin modal-close-icon() {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 2rem !important;
+  height: 2rem !important;
+  line-height: 2rem !important;
+  border-radius: 0.375rem;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  &:hover {
+    color: #ffffff !important;
+    background-color: $modal-close-hover-bg;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+    background-color: $modal-close-focus-bg;
+  }
+}
+
+// ============================================
+// MIXIN: Complete Modal Styling
+// ============================================
+@mixin modal-complete($wrapper-class) {
+  #{$wrapper-class} {
+    @include modal-wrapper-container();
+
+    // Modal dialog
+    :deep(.ant-modal) {
+      @include modal-dialog();
+    }
+
+    // Modal header
+    :deep(.ant-modal-header) {
+      @include modal-header();
+    }
+
+    // Modal title
+    :deep(.ant-modal-title) {
+      @include modal-title();
+    }
+
+    // Modal body
+    :deep(.ant-modal-body) {
+      @include modal-body();
+    }
+
+    // Modal content
+    :deep(.ant-modal-content) {
+      @include modal-content();
+    }
+
+    // Close button
+    :deep(.ant-modal-close) {
+      @include modal-close-button();
+    }
+
+    :deep(.ant-modal-close-x) {
+      @include modal-close-icon();
+    }
+
+    // ========================================
+    // RESPONSIVE: Mobile (max-width: 640px)
+    // ========================================
+    @media (max-width: 640px) {
+      :deep(.ant-modal) {
+        width: 90vw !important;
+        max-width: 90vw !important;
+        margin: 0;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      :deep(.ant-modal-header) {
+        padding: 0.875rem 1rem;
+      }
+
+      :deep(.ant-modal-title) {
+        font-size: 1rem;
+      }
+
+      :deep(.ant-modal-close) {
+        top: 0.875rem !important;
+        right: 0.875rem !important;
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+        line-height: 1.75rem !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      :deep(.ant-modal-close-x) {
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+        line-height: 1.75rem !important;
+        font-size: 16px !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+    }
+
+    // ========================================
+    // RESPONSIVE: Tablet and Desktop (768px+)
+    // ========================================
+    @media (min-width: 768px) {
+      :deep(.ant-modal) {
+        border-radius: 0.5rem;
+      }
+
+      :deep(.ant-modal-header) {
+        border-radius: 0.5rem 0.5rem 0.5 0;
+        padding: 1.25rem 1.5rem;
+      }
+    }
+  }
+}
+

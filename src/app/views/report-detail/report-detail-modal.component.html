@@ -1,0 +1,90 @@
+<!-- Report Detail Modal -->
+<nz-modal
+  [nzVisible]="isOpen()"
+  nzTitle="Report Detail 2"
+  (nzOnCancel)="onModalClose()"
+  [nzWidth]="'90%'"
+  [nzBodyStyle]="{ padding: '0' }"
+  nzCentered
+  [nzFooter]="footer"
+  nzWrapClassName="report-detail-modal-wrapper"
+>
+ <ng-container *nzModalContent>
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="p-4 md:p-6 bg-white flex flex-col items-center justify-center py-16 gap-4">
+      <nz-spin [nzSimple]="true" nzSize="large"></nz-spin>
+      <span class="text-gray-600 text-sm">Loading report...</span>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (!isLoading() && error()) {
+    <div class="p-4 md:p-6 bg-white space-y-4">
+      <nz-alert
+        nzType="error"
+        [nzMessage]="error()?.error?.message || 'An error occurred loading the report'"
+        nzShowIcon
+        [nzCloseable]="false"
+        class="mb-4"
+      ></nz-alert>
+      <div class="flex gap-3 justify-end pt-4 border-t border-gray-200">
+        <button
+          nz-button
+          nzType="default"
+          (click)="onModalClose()"
+          class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg transition-all duration-200 hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus-visible:ring-2 focus-visible:ring-gray-400 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-300"
+        >
+          Close
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          (click)="onRetry()"
+          class="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 border border-indigo-600 rounded-lg transition-all duration-200 hover:from-indigo-700 hover:to-purple-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:from-indigo-600 disabled:hover:to-purple-600 disabled:hover:shadow-none"
+        >
+          Retry
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Success State - Report Content -->
+  @if (!isLoading() && !error() && report()) {
+    <div class="p-4 md:p-4 bg-white">
+      <!-- Report Content -->
+      <app-report-detail-content [report]="report()!">
+      </app-report-detail-content>
+
+      <!-- Feedback Modal Overlay (First Report Only) -->
+      @if (showFeedback()) {
+        <app-report-feedback-modal
+          [selectedRating]="feedbackFormValue().rating"
+          [comment]="feedbackFormValue().comment"
+          [isSubmitting]="isFeedbackSubmitting()"
+          [error]="feedbackError()"
+          [remainingChars]="remainingChars()"
+          (onRatingSelect)="onFeedbackRatingSelect($event)"
+          (onCommentChange)="onFeedbackCommentChange($event)"
+          (onSubmit)="onFeedbackSubmit()"
+          (onCancel)="onFeedbackCancel()"
+        ></app-report-feedback-modal>
+      }
+    </div>
+  }
+</ng-container>
+
+  <!-- Modal Footer Template -->
+  <ng-template #footer>
+    <div class="flex gap-3 justify-end pt-4 border-t border-gray-200">
+      <button
+        nz-button
+        nzType="default"
+        (click)="onModalClose()"
+        class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg transition-all duration-200 hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus-visible:ring-2 focus-visible:ring-gray-400 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-300"
+      >
+        Close
+      </button>
+    </div>
+  </ng-template>
+</nz-modal>
