@@ -1,0 +1,41 @@
+<!-- Report Detail Content -->
+<div class="space-y-4">
+  <!-- Report Header -->
+  <div class="flex items-center justify-between border-b pb-4 mb-4">
+    <div class="flex-1">
+      <p class="text-xs text-gray-500 uppercase tracking-wide">Report Generated</p>
+      <p class="text-base font-semibold text-gray-900 mt-1">
+        {{ report().createdAtFormatted }}
+      </p>
+    </div>
+    <nz-badge
+      [nzStatus]="report().generatedByLabel === 'Scheduled' ? 'success' : 'processing'"
+      [nzText]="report().generatedByLabel"
+    ></nz-badge>
+  </div>
+
+  <!-- Report Content IFrame -->
+  <div class="report-content-container bg-white border border-gray-200 rounded-lg overflow-hidden min-h-96">
+    <app-report-iframe-renderer
+      [htmlContent]="report().html"
+      [iframeTitle]="'Report Content - ' + report().createdAtFormatted"
+    ></app-report-iframe-renderer>
+  </div>
+
+  <!-- Categories Snapshot (if available) -->
+  @if (report().categoriesSnapshot && report().categoriesSnapshot.length > 0) {
+    <div class="pt-6 border-t border-gray-200 mt-6">
+      <p class="text-xs text-gray-600 uppercase tracking-wide font-medium mb-3">
+        Categories included
+      </p>
+      <div class="flex flex-wrap gap-2">
+        @for (category of report().categoriesSnapshot; track category.id) {
+          <span class="inline-block px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-xs font-medium border border-indigo-100">
+            {{ category }}
+          </span>
+        }
+      </div>
+    </div>
+  }
+</div>
+

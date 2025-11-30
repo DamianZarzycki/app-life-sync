@@ -1,0 +1,13 @@
+// Report IFrame Renderer Styles - using Tailwind utilities
+// Theme: Consistent with design system
+// Responsive: Mobile-first approach
+
+// Smooth transitions and interactions
+.iframe-wrapper {
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+

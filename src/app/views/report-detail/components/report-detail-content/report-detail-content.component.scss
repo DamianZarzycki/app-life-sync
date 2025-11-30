@@ -1,0 +1,14 @@
+// Report Detail Content Styles - matching Add Note Modal design
+// Theme: Indigo/purple primary, gray neutrals
+// Responsive: Mobile-first approach
+// Accessibility: Focus-visible styles
+
+// Smooth transitions for interactive elements
+.report-content-container {
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+

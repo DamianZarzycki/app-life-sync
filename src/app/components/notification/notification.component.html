@@ -1,0 +1,37 @@
+<div [class]="getBackgroundClass()">
+  <div class="flex items-center justify-between gap-2">
+    <!-- Icon + Content -->
+    <div class="flex items-center gap-2 flex-1 min-w-0">
+      <!-- Icon -->
+      <div
+        class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-sm font-bold"
+        [class]="getIconCircleClass()">
+        {{ getIcon() }}
+      </div>
+
+      <!-- Text (Title only or Title + Message) -->
+      <div class="flex-1 min-w-0">
+        @if (notification.message) {
+          <p [class]="getTitleClass() + ' text-sm'">
+            {{ notification.title }}: {{ notification.message }}
+          </p>
+        } @else {
+          <p [class]="getTitleClass() + ' text-sm font-medium'">
+            {{ notification.title }}
+          </p>
+        }
+      </div>
+    </div>
+
+    <!-- Close Button -->
+    <button
+      (click)="onClose()"
+      class="flex-shrink-0 text-lg font-bold transition-colors cursor-pointer hover:opacity-70 ml-2"
+      [class]="getCloseButtonClass()"
+      aria-label="Close notification"
+      title="Close">
+      ×
+    </button>
+  </div>
+</div>
+

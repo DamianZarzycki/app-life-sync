@@ -1,0 +1,93 @@
+// Report Feedback Modal Styles - matching Add Note Form design
+// Theme: Indigo/purple primary, gray neutrals
+// Responsive: Mobile-first approach
+// Accessibility: Focus-visible styles
+
+// Animation for modal appearance
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feedback-overlay {
+  animation: slideIn 0.3s ease-out;
+}
+
+.feedback-modal {
+  animation: slideIn 0.3s ease-out;
+}
+
+// Rating button styling with interactive states
+.rating-button {
+  transition: all 0.2s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
+// Custom scrollbar styling for feedback body (SCSS enhancement)
+.feedback-body {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d1d5db; // gray-300
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: #9ca3af; // gray-400
+    }
+  }
+}
+
+// Textarea styling with focus state
+.feedback-textarea {
+  transition: all 0.2s ease;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+}
+
+// Button styling to match add-note-form
+button {
+  transition: all 0.2s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+// Mobile responsive adjustments
+@media (max-width: 640px) {
+  .rating-button {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .rating-emoji {
+    font-size: 24px;
+  }
+
+  .feedback-footer {
+    flex-direction: column-reverse;
+  }
+}
+
